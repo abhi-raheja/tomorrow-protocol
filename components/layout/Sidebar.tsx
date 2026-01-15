@@ -43,7 +43,7 @@ export function Sidebar({ type = 'lp' }: SidebarProps) {
   };
 
   return (
-    <aside className="fixed left-0 top-16 bottom-0 w-64 border-r border-white/[0.08] bg-[#0a0a0a] hidden lg:block">
+    <aside className="fixed left-0 top-16 bottom-0 w-64 border-r border-gray-100 bg-white hidden lg:block">
       <div className="flex flex-col h-full p-4">
         {/* Navigation */}
         <nav className="space-y-1">
@@ -56,11 +56,11 @@ export function Sidebar({ type = 'lp' }: SidebarProps) {
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/50 hover:text-white hover:bg-white/5'
+                    ? 'bg-orange-50 text-[#ff5900]'
+                    : 'text-gray-600 hover:text-[#15191e] hover:bg-gray-50'
                 }`}
               >
-                <Icon className={`h-5 w-5 ${isActive ? 'text-white' : 'text-white/50'}`} />
+                <Icon className={`h-5 w-5 ${isActive ? 'text-[#ff5900]' : 'text-gray-400'}`} />
                 {item.label}
               </Link>
             );
@@ -69,27 +69,27 @@ export function Sidebar({ type = 'lp' }: SidebarProps) {
 
         {/* Position Summary Card - Only for LP */}
         {type === 'lp' && (
-          <div className="mt-auto pt-4 border-t border-white/[0.08]">
-            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-              <div className="text-xs text-white/40 uppercase tracking-wider mb-3">
+          <div className="mt-auto pt-4 border-t border-gray-100">
+            <div className="p-4 rounded-xl bg-[#15191e]">
+              <div className="text-xs text-gray-400 uppercase tracking-wider mb-3">
                 Your Position
               </div>
               <div className="space-y-3">
                 <div>
-                  <div className="text-xs text-white/40 mb-0.5">Current Value</div>
+                  <div className="text-xs text-gray-400 mb-0.5">Current Value</div>
                   <div className="text-lg font-semibold text-white tabular-nums">
                     {formatCurrency(currentUserPosition.currentValue)}
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="text-xs text-white/40 mb-0.5">Accrued Yield</div>
-                    <div className="text-sm font-medium text-emerald-400 tabular-nums">
+                    <div className="text-xs text-gray-400 mb-0.5">Accrued Yield</div>
+                    <div className="text-sm font-medium text-[#ff5900] tabular-nums">
                       +{formatCurrency(currentUserPosition.accruedYield)}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-white/40 mb-0.5">APY</div>
+                    <div className="text-xs text-gray-400 mb-0.5">APY</div>
                     <div className="text-sm font-medium text-white tabular-nums">
                       {currentUserPosition.apy}%
                     </div>

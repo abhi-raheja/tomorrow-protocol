@@ -20,7 +20,7 @@ export default function LPDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <Sidebar type="lp" />
 
@@ -30,14 +30,14 @@ export default function LPDashboard() {
           {/* Page Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
-              <p className="text-white/50 mt-1">Monitor your LP position and pool metrics</p>
+              <h1 className="text-2xl font-semibold text-[#15191e]">Dashboard</h1>
+              <p className="text-gray-500 mt-1">Monitor your LP position and pool metrics</p>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" asChild className="border-white/20 text-white hover:bg-white/5">
+              <Button variant="outline" asChild className="border-gray-300 text-[#15191e] hover:bg-gray-100">
                 <Link href="/lp/withdraw">Withdraw</Link>
               </Button>
-              <Button asChild className="bg-white text-black hover:bg-white/90">
+              <Button asChild className="bg-[#ff5900] hover:bg-[#e65000] text-white">
                 <Link href="/lp/deposit">Deposit</Link>
               </Button>
             </div>
@@ -45,7 +45,7 @@ export default function LPDashboard() {
 
           {/* Portfolio Overview */}
           <section className="mb-8">
-            <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
               Portfolio Overview
             </h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -73,25 +73,25 @@ export default function LPDashboard() {
 
           {/* Pool Health */}
           <section className="mb-8">
-            <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
               Pool Health
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Utilization */}
-              <div className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-                <div className="text-sm text-white/40 mb-4">Pool Utilization</div>
+              <div className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
+                <div className="text-sm text-gray-500 mb-4">Pool Utilization</div>
                 <UtilizationGauge />
                 <div className="mt-4 flex justify-between text-sm">
-                  <span className="text-white/40">Available</span>
-                  <span className="text-white font-medium">{formatCurrency(poolMetrics.liquidity)}</span>
+                  <span className="text-gray-500">Available</span>
+                  <span className="text-[#15191e] font-medium">{formatCurrency(poolMetrics.liquidity)}</span>
                 </div>
               </div>
 
               {/* TVL Chart */}
-              <div className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
+              <div className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="text-sm text-white/40">TVL (6 months)</div>
-                  <div className="text-lg font-semibold text-white tabular-nums">
+                  <div className="text-sm text-gray-500">TVL (6 months)</div>
+                  <div className="text-lg font-semibold text-[#15191e] tabular-nums">
                     {formatCurrency(poolMetrics.tvl)}
                   </div>
                 </div>
@@ -99,10 +99,10 @@ export default function LPDashboard() {
               </div>
 
               {/* APY Chart */}
-              <div className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
+              <div className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="text-sm text-white/40">APY (6 months)</div>
-                  <div className="text-lg font-semibold text-emerald-400 tabular-nums">
+                  <div className="text-sm text-gray-500">APY (6 months)</div>
+                  <div className="text-lg font-semibold text-[#ff5900] tabular-nums">
                     {poolMetrics.apy}%
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export default function LPDashboard() {
 
           {/* Pool Metrics */}
           <section className="mb-8">
-            <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
               Pool Metrics
             </h2>
             <PoolMetricsGrid />
@@ -122,10 +122,10 @@ export default function LPDashboard() {
           {/* Recent Activity */}
           <section>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider">
+              <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
                 Recent Activity
               </h2>
-              <button className="text-sm text-white/40 hover:text-white transition-colors">
+              <button className="text-sm text-gray-500 hover:text-[#15191e] transition-colors">
                 View All
               </button>
             </div>
@@ -151,17 +151,17 @@ function OverviewCard({
   highlight?: boolean;
 }) {
   return (
-    <div className={`p-5 rounded-xl border ${highlight ? 'bg-white/[0.04] border-white/[0.12]' : 'bg-white/[0.02] border-white/[0.08]'}`}>
-      <div className="text-sm text-white/40 mb-2">{label}</div>
+    <div className={`p-5 rounded-xl border shadow-sm ${highlight ? 'bg-orange-50 border-orange-100' : 'bg-white border-gray-100'}`}>
+      <div className="text-sm text-gray-500 mb-2">{label}</div>
       <div
         className={`text-2xl font-semibold tabular-nums ${
-          trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-red-400' : 'text-white'
+          trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-500' : 'text-[#15191e]'
         }`}
       >
         {value}
       </div>
       {subValue && (
-        <div className="text-sm text-white/40 mt-1">{subValue}</div>
+        <div className="text-sm text-gray-500 mt-1">{subValue}</div>
       )}
     </div>
   );

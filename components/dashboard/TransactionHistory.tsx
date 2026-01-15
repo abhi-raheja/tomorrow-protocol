@@ -31,52 +31,52 @@ export function TransactionHistory() {
   const getTypeStyles = (type: string) => {
     switch (type) {
       case 'deposit':
-        return { bg: 'bg-emerald-500/10', text: 'text-emerald-400', label: 'Deposit' };
+        return { bg: 'bg-green-100', text: 'text-green-700', label: 'Deposit' };
       case 'withdrawal':
-        return { bg: 'bg-orange-500/10', text: 'text-orange-400', label: 'Withdrawal' };
+        return { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Withdrawal' };
       case 'yield':
-        return { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'Yield' };
+        return { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Yield' };
       case 'repayment':
-        return { bg: 'bg-purple-500/10', text: 'text-purple-400', label: 'Repayment' };
+        return { bg: 'bg-purple-100', text: 'text-purple-700', label: 'Repayment' };
       case 'drawdown':
-        return { bg: 'bg-yellow-500/10', text: 'text-yellow-400', label: 'Drawdown' };
+        return { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Drawdown' };
       default:
-        return { bg: 'bg-white/10', text: 'text-white/60', label: type };
+        return { bg: 'bg-gray-100', text: 'text-gray-600', label: type };
     }
   };
 
   const getStatusStyles = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'text-emerald-400';
+        return 'text-green-600';
       case 'pending':
-        return 'text-yellow-400';
+        return 'text-yellow-600';
       case 'distributed':
-        return 'text-blue-400';
+        return 'text-blue-600';
       case 'failed':
-        return 'text-red-400';
+        return 'text-red-600';
       default:
-        return 'text-white/40';
+        return 'text-gray-500';
     }
   };
 
   return (
-    <div className="rounded-xl border border-white/[0.08] overflow-hidden">
+    <div className="rounded-xl border border-gray-100 bg-white overflow-hidden shadow-sm">
       <Table>
         <TableHeader>
-          <TableRow className="border-white/[0.08] hover:bg-transparent">
-            <TableHead className="text-white/40 font-medium">Type</TableHead>
-            <TableHead className="text-white/40 font-medium">Amount</TableHead>
-            <TableHead className="text-white/40 font-medium hidden sm:table-cell">Date</TableHead>
-            <TableHead className="text-white/40 font-medium hidden md:table-cell">Status</TableHead>
-            <TableHead className="text-white/40 font-medium text-right hidden lg:table-cell">Tx Hash</TableHead>
+          <TableRow className="border-gray-100 hover:bg-transparent bg-gray-50">
+            <TableHead className="text-gray-500 font-medium">Type</TableHead>
+            <TableHead className="text-gray-500 font-medium">Amount</TableHead>
+            <TableHead className="text-gray-500 font-medium hidden sm:table-cell">Date</TableHead>
+            <TableHead className="text-gray-500 font-medium hidden md:table-cell">Status</TableHead>
+            <TableHead className="text-gray-500 font-medium text-right hidden lg:table-cell">Tx Hash</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {recentTransactions.map((tx) => {
             const typeStyle = getTypeStyles(tx.type);
             return (
-              <TableRow key={tx.id} className="border-white/[0.08] hover:bg-white/[0.02]">
+              <TableRow key={tx.id} className="border-gray-100 hover:bg-gray-50">
                 <TableCell>
                   <span
                     className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${typeStyle.bg} ${typeStyle.text}`}
@@ -84,10 +84,10 @@ export function TransactionHistory() {
                     {typeStyle.label}
                   </span>
                 </TableCell>
-                <TableCell className="font-medium text-white tabular-nums">
+                <TableCell className="font-medium text-[#15191e] tabular-nums">
                   {tx.type === 'withdrawal' ? '-' : '+'}{formatCurrency(tx.amount)}
                 </TableCell>
-                <TableCell className="text-white/50 hidden sm:table-cell">
+                <TableCell className="text-gray-500 hidden sm:table-cell">
                   {formatDate(tx.date)}
                 </TableCell>
                 <TableCell className={`capitalize hidden md:table-cell ${getStatusStyles(tx.status)}`}>
@@ -96,7 +96,7 @@ export function TransactionHistory() {
                 <TableCell className="text-right hidden lg:table-cell">
                   <a
                     href="#"
-                    className="text-sm text-white/40 hover:text-white/60 font-mono transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#ff5900] font-mono transition-colors"
                   >
                     {tx.txHash}
                   </a>

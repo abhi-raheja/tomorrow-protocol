@@ -46,83 +46,84 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* Dark theme by default - Maple Finance inspired */
+/* Brex-inspired Light Theme */
 :root {
-  --radius: 0.75rem;
-  /* Near black background like Maple */
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  /* Cards with subtle elevation */
-  --card: #141414;
-  --card-foreground: #fafafa;
-  --popover: #141414;
-  --popover-foreground: #fafafa;
-  /* Primary - clean white for dark theme */
-  --primary: #ffffff;
-  --primary-foreground: #0a0a0a;
-  /* Secondary - subtle gray */
-  --secondary: #1f1f1f;
-  --secondary-foreground: #fafafa;
-  /* Muted elements */
-  --muted: #1f1f1f;
-  --muted-foreground: #a1a1a1;
-  /* Accent - subtle highlight */
-  --accent: #1f1f1f;
-  --accent-foreground: #fafafa;
-  /* Destructive - muted red */
+  --radius: 0.5rem;
+  /* Light backgrounds */
+  --background: #ffffff;
+  --foreground: #15191e;
+  /* Cards */
+  --card: #ffffff;
+  --card-foreground: #15191e;
+  --popover: #ffffff;
+  --popover-foreground: #15191e;
+  /* Primary - Brex Orange */
+  --primary: #ff5900;
+  --primary-foreground: #ffffff;
+  /* Secondary */
+  --secondary: #f4f4f5;
+  --secondary-foreground: #15191e;
+  /* Muted */
+  --muted: #f9f9fb;
+  --muted-foreground: #71717a;
+  /* Accent */
+  --accent: #fff7ed;
+  --accent-foreground: #ff5900;
+  /* Destructive */
   --destructive: #dc2626;
-  /* Borders - very subtle */
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: rgba(255, 255, 255, 0.2);
-  /* Chart colors - sophisticated palette */
-  --chart-1: #3b82f6;
-  --chart-2: #10b981;
-  --chart-3: #f59e0b;
-  --chart-4: #8b5cf6;
-  --chart-5: #ec4899;
+  --destructive-foreground: #ffffff;
+  /* Borders */
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #ff5900;
+  /* Chart colors */
+  --chart-1: #ff5900;
+  --chart-2: #15191e;
+  --chart-3: #3b82f6;
+  --chart-4: #10b981;
+  --chart-5: #8b5cf6;
   /* Sidebar */
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #ffffff;
-  --sidebar-primary-foreground: #0a0a0a;
-  --sidebar-accent: #1f1f1f;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: rgba(255, 255, 255, 0.2);
-  /* Custom colors */
+  --sidebar: #15191e;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ff5900;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1f2937;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #374151;
+  --sidebar-ring: #ff5900;
+  /* Custom */
   --success: #10b981;
   --warning: #f59e0b;
 }
 
-/* Light theme option */
-.light {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --card: #fafafa;
-  --card-foreground: #0a0a0a;
-  --popover: #ffffff;
-  --popover-foreground: #0a0a0a;
-  --primary: #0a0a0a;
+/* Dark mode option */
+.dark {
+  --background: #15191e;
+  --foreground: #f9f9fb;
+  --card: #1f2937;
+  --card-foreground: #f9f9fb;
+  --popover: #1f2937;
+  --popover-foreground: #f9f9fb;
+  --primary: #ff5900;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #0a0a0a;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: #f5f5f5;
-  --accent-foreground: #0a0a0a;
+  --secondary: #374151;
+  --secondary-foreground: #f9f9fb;
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #451a03;
+  --accent-foreground: #ff5900;
   --destructive: #dc2626;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: rgba(0, 0, 0, 0.08);
-  --ring: rgba(0, 0, 0, 0.2);
-  --sidebar: #fafafa;
-  --sidebar-foreground: #0a0a0a;
-  --sidebar-primary: #0a0a0a;
+  --border: #374151;
+  --input: #374151;
+  --ring: #ff5900;
+  --sidebar: #0f1115;
+  --sidebar-foreground: #f9f9fb;
+  --sidebar-primary: #ff5900;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5f5f5;
-  --sidebar-accent-foreground: #0a0a0a;
-  --sidebar-border: rgba(0, 0, 0, 0.08);
-  --sidebar-ring: rgba(0, 0, 0, 0.2);
+  --sidebar-accent: #1f2937;
+  --sidebar-accent-foreground: #f9f9fb;
+  --sidebar-border: #374151;
+  --sidebar-ring: #ff5900;
 }
 
 @layer base {
@@ -136,110 +137,89 @@
 }
 
 @layer utilities {
-  /* Glassmorphism effect for header */
-  .glass {
-    background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+  /* Brex-style gradient background */
+  .brex-gradient {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffffff 50%, #f9f9fb 100%);
   }
 
-  .glass-light {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  /* Subtle glow effect */
-  .glow {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+  /* Orange glow effect */
+  .orange-glow {
+    box-shadow: 0 0 40px rgba(255, 89, 0, 0.15);
   }
 
   /* Card hover effect */
   .card-hover {
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
   }
   .card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(21, 25, 30, 0.12);
   }
 
-  /* Gradient text */
-  .gradient-text {
-    background: linear-gradient(135deg, #ffffff 0%, #a1a1a1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Brex-style button */
+  .brex-button {
+    background: #ff5900;
+    color: white;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  .brex-button:hover {
+    background: #e65000;
+    transform: translateY(-1px);
   }
 
-  /* Animated gradient border */
-  .gradient-border {
-    position: relative;
-    background: var(--card);
-    border-radius: var(--radius);
-  }
-  .gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius);
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+  /* Dark card style for contrast sections */
+  .dark-card {
+    background: #15191e;
+    color: #ffffff;
   }
 
-  /* Subtle pulse animation */
-  @keyframes subtle-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-  }
-  .animate-subtle-pulse {
-    animation: subtle-pulse 3s ease-in-out infinite;
-  }
-
-  /* Number/money styling with tabular figures */
+  /* Tabular numbers for data */
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Metric large number styling */
+  /* Metric styling */
   .metric-value {
     font-size: 2.5rem;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1;
     letter-spacing: -0.02em;
   }
 
   /* Section spacing */
   .section-padding {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  /* Subtle border style */
+  .subtle-border {
+    border: 1px solid rgba(0, 0, 0, 0.08);
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - light theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f9f9fb;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #d4d4d8;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #a1a1aa;
 }
 
-/* Selection styling */
+/* Selection styling with Brex orange */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
-  color: #ffffff;
+  background: rgba(255, 89, 0, 0.2);
+  color: #15191e;
 }

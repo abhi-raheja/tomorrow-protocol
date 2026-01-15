@@ -17,7 +17,7 @@ export function UtilizationGauge() {
             cy="50"
             r="45"
             fill="none"
-            stroke="rgba(255,255,255,0.1)"
+            stroke="#e5e7eb"
             strokeWidth="8"
           />
           {/* Progress circle */}
@@ -26,7 +26,7 @@ export function UtilizationGauge() {
             cy="50"
             r="45"
             fill="none"
-            stroke="#3b82f6"
+            stroke="#ff5900"
             strokeWidth="8"
             strokeLinecap="round"
             strokeDasharray={circumference}
@@ -36,10 +36,10 @@ export function UtilizationGauge() {
         </svg>
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-semibold text-white tabular-nums">
+          <span className="text-2xl font-semibold text-[#15191e] tabular-nums">
             {percentage}%
           </span>
-          <span className="text-xs text-white/40">Utilized</span>
+          <span className="text-xs text-gray-500">Utilized</span>
         </div>
       </div>
     </div>
@@ -58,17 +58,17 @@ export function MetricCard({
   trend?: 'up' | 'down' | 'neutral';
 }) {
   return (
-    <div className="p-5 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-      <div className="text-sm text-white/40 mb-2">{label}</div>
-      <div className="text-2xl font-semibold text-white tabular-nums">{value}</div>
+    <div className="p-5 rounded-xl bg-white border border-gray-100 shadow-sm">
+      <div className="text-sm text-gray-500 mb-2">{label}</div>
+      <div className="text-2xl font-semibold text-[#15191e] tabular-nums">{value}</div>
       {subValue && (
         <div
           className={`text-sm mt-1 tabular-nums ${
             trend === 'up'
-              ? 'text-emerald-400'
+              ? 'text-green-600'
               : trend === 'down'
-              ? 'text-red-400'
-              : 'text-white/40'
+              ? 'text-green-600'
+              : 'text-gray-500'
           }`}
         >
           {subValue}

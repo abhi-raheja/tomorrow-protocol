@@ -90,7 +90,7 @@ export default function WithdrawPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <Sidebar type="lp" />
 
@@ -99,7 +99,7 @@ export default function WithdrawPage() {
           {/* Back Link */}
           <Link
             href="/lp"
-            className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/60 transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#15191e] transition-colors mb-6"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -109,22 +109,22 @@ export default function WithdrawPage() {
 
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-white">Withdraw</h1>
-            <p className="text-white/50 mt-1">Withdraw your USDC from the pool</p>
+            <h1 className="text-2xl font-semibold text-[#15191e]">Withdraw</h1>
+            <p className="text-gray-500 mt-1">Withdraw your USDC from the pool</p>
           </div>
 
           {/* Current Position */}
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-6">
+          <div className="p-4 rounded-xl bg-white border border-gray-100 shadow-sm mb-6">
             <div className="flex justify-between items-center">
               <div>
-                <div className="text-sm text-white/40">Your Position</div>
-                <div className="text-xl font-semibold text-white tabular-nums">
+                <div className="text-sm text-gray-500">Your Position</div>
+                <div className="text-xl font-semibold text-[#15191e] tabular-nums">
                   {formatCurrency(currentUserPosition.currentValue)}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm text-white/40">Available Liquidity</div>
-                <div className="text-xl font-semibold text-white tabular-nums">
+                <div className="text-sm text-gray-500">Available Liquidity</div>
+                <div className="text-xl font-semibold text-[#15191e] tabular-nums">
                   {formatCurrency(availableLiquidity)}
                 </div>
               </div>
@@ -132,12 +132,12 @@ export default function WithdrawPage() {
           </div>
 
           {/* Withdraw Form */}
-          <div className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
+          <div className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
             {/* Amount Input */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm text-white/60">Amount</label>
-                <span className="text-sm text-white/40">
+                <label className="text-sm text-gray-600">Amount</label>
+                <span className="text-sm text-gray-500">
                   Max: {formatCurrency(maxWithdraw)}
                 </span>
               </div>
@@ -150,27 +150,27 @@ export default function WithdrawPage() {
                     setAmount(e.target.value);
                     setSelectedOption(null);
                   }}
-                  className="h-14 text-2xl font-semibold bg-white/[0.02] border-white/[0.08] text-white placeholder:text-white/20 pr-24"
+                  className="h-14 text-2xl font-semibold bg-gray-50 border-gray-200 text-[#15191e] placeholder:text-gray-300 pr-24"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMaxClick}
-                    className="text-xs text-white/40 hover:text-white px-2 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors"
+                    className="text-xs text-gray-500 hover:text-[#15191e] px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 transition-colors"
                   >
                     MAX
                   </button>
-                  <span className="text-white/40 font-medium">USDC</span>
+                  <span className="text-gray-500 font-medium">USDC</span>
                 </div>
               </div>
               {amount && numericAmount > maxWithdraw && (
-                <p className="text-sm text-red-400 mt-2">Exceeds your position</p>
+                <p className="text-sm text-red-500 mt-2">Exceeds your position</p>
               )}
             </div>
 
             {/* Withdrawal Options */}
             {isValidAmount && (
               <div className="space-y-3 mb-6">
-                <div className="text-sm text-white/40 mb-3">Withdrawal Options</div>
+                <div className="text-sm text-gray-500 mb-3">Withdrawal Options</div>
 
                 {/* Instant Option */}
                 {canInstant && (
@@ -180,11 +180,11 @@ export default function WithdrawPage() {
                     selected={selectedOption === 'instant'}
                     onClick={() => setSelectedOption('instant')}
                     badge="Recommended"
-                    badgeColor="emerald"
+                    badgeColor="green"
                   >
                     <div className="flex justify-between text-sm mt-3">
-                      <span className="text-white/40">You receive</span>
-                      <span className="text-white font-medium tabular-nums">
+                      <span className="text-gray-500">You receive</span>
+                      <span className="text-[#15191e] font-medium tabular-nums">
                         {formatCurrency(numericAmount)}
                       </span>
                     </div>
@@ -200,12 +200,12 @@ export default function WithdrawPage() {
                 >
                   <div className="space-y-2 mt-3">
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/40">Estimated date</span>
-                      <span className="text-white font-medium">{getEstimatedDate()}</span>
+                      <span className="text-gray-500">Estimated date</span>
+                      <span className="text-[#15191e] font-medium">{getEstimatedDate()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/40">You receive</span>
-                      <span className="text-white font-medium tabular-nums">
+                      <span className="text-gray-500">You receive</span>
+                      <span className="text-[#15191e] font-medium tabular-nums">
                         {formatCurrency(numericAmount)}
                       </span>
                     </div>
@@ -224,14 +224,14 @@ export default function WithdrawPage() {
                   >
                     <div className="space-y-2 mt-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-white/40">Fee (2%)</span>
-                        <span className="text-orange-400 font-medium tabular-nums">
+                        <span className="text-gray-500">Fee (2%)</span>
+                        <span className="text-[#ff5900] font-medium tabular-nums">
                           -{formatCurrency(numericAmount * premiumFee)}
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-white/40">You receive</span>
-                        <span className="text-white font-medium tabular-nums">
+                        <span className="text-gray-500">You receive</span>
+                        <span className="text-[#15191e] font-medium tabular-nums">
                           {formatCurrency(numericAmount * (1 - premiumFee))}
                         </span>
                       </div>
@@ -245,11 +245,11 @@ export default function WithdrawPage() {
             <Button
               onClick={handleWithdraw}
               disabled={!selectedOption || !isValidAmount || isProcessing}
-              className="w-full h-12 bg-white text-black hover:bg-white/90 disabled:bg-white/10 disabled:text-white/40"
+              className="w-full h-12 bg-[#ff5900] hover:bg-[#e65000] text-white disabled:bg-gray-100 disabled:text-gray-400"
             >
               {isProcessing ? (
                 <span className="flex items-center gap-2">
-                  <LoadingSpinner dark />
+                  <LoadingSpinner />
                   Processing...
                 </span>
               ) : (
@@ -260,20 +260,20 @@ export default function WithdrawPage() {
 
           {/* Queue Info */}
           {withdrawalQueue.length > 0 && (
-            <div className="mt-6 p-4 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-              <div className="text-sm text-white/40 mb-3">Your Pending Withdrawals</div>
+            <div className="mt-6 p-4 rounded-xl bg-white border border-gray-100 shadow-sm">
+              <div className="text-sm text-gray-500 mb-3">Your Pending Withdrawals</div>
               <div className="space-y-3">
                 {withdrawalQueue.map((item) => (
                   <div key={item.id} className="flex justify-between items-center">
                     <div>
-                      <div className="text-white font-medium tabular-nums">
+                      <div className="text-[#15191e] font-medium tabular-nums">
                         {formatCurrency(item.amount)}
                       </div>
-                      <div className="text-xs text-white/40">Position #{item.position} in queue</div>
+                      <div className="text-xs text-gray-500">Position #{item.position} in queue</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm text-white/60">Est. {item.estimatedDate}</div>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400">
+                      <div className="text-sm text-gray-600">Est. {item.estimatedDate}</div>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700">
                         {item.status}
                       </span>
                     </div>
@@ -287,56 +287,56 @@ export default function WithdrawPage() {
 
       {/* Success Modal */}
       <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
-        <DialogContent className="sm:max-w-md bg-[#141414] border-white/10 text-center">
+        <DialogContent className="sm:max-w-md bg-white border-gray-200 text-center">
           <div className="py-6">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
-              <svg className="h-8 w-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
+              <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-semibold text-center">
+              <DialogTitle className="text-2xl font-semibold text-center text-[#15191e]">
                 {successData?.type === 'queued' ? 'Withdrawal Queued!' : 'Withdrawal Successful!'}
               </DialogTitle>
             </DialogHeader>
             {successData && (
               <>
-                <p className="text-white/50 mt-2 mb-6">
+                <p className="text-gray-500 mt-2 mb-6">
                   {successData.type === 'queued'
                     ? `Your withdrawal of ${formatCurrency(successData.amount)} has been queued`
                     : `You have withdrawn ${formatCurrency(successData.amount - (successData.fee || 0))}`}
                 </p>
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-6 text-left">
+                <div className="p-4 rounded-xl bg-gray-50 border border-gray-100 mb-6 text-left">
                   {successData.type === 'queued' ? (
                     <>
                       <div className="flex justify-between mb-2">
-                        <span className="text-white/50">Queue Position</span>
-                        <span className="text-white font-medium">#{successData.queuePosition}</span>
+                        <span className="text-gray-500">Queue Position</span>
+                        <span className="text-[#15191e] font-medium">#{successData.queuePosition}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/50">Estimated Date</span>
-                        <span className="text-white font-medium">{successData.estimatedDate}</span>
+                        <span className="text-gray-500">Estimated Date</span>
+                        <span className="text-[#15191e] font-medium">{successData.estimatedDate}</span>
                       </div>
                     </>
                   ) : (
                     <>
                       <div className="flex justify-between mb-2">
-                        <span className="text-white/50">Amount</span>
-                        <span className="text-white font-medium tabular-nums">
+                        <span className="text-gray-500">Amount</span>
+                        <span className="text-[#15191e] font-medium tabular-nums">
                           {formatCurrency(successData.amount)}
                         </span>
                       </div>
                       {successData.fee && (
                         <div className="flex justify-between mb-2">
-                          <span className="text-white/50">Premium Fee</span>
-                          <span className="text-orange-400 font-medium tabular-nums">
+                          <span className="text-gray-500">Premium Fee</span>
+                          <span className="text-[#ff5900] font-medium tabular-nums">
                             -{formatCurrency(successData.fee)}
                           </span>
                         </div>
                       )}
-                      <div className="flex justify-between pt-2 border-t border-white/[0.08]">
-                        <span className="text-white/50">Received</span>
-                        <span className="text-emerald-400 font-medium tabular-nums">
+                      <div className="flex justify-between pt-2 border-t border-gray-100">
+                        <span className="text-gray-500">Received</span>
+                        <span className="text-green-600 font-medium tabular-nums">
                           {formatCurrency(successData.amount - (successData.fee || 0))}
                         </span>
                       </div>
@@ -345,7 +345,7 @@ export default function WithdrawPage() {
                 </div>
               </>
             )}
-            <Button asChild className="w-full bg-white text-black hover:bg-white/90">
+            <Button asChild className="w-full bg-[#ff5900] hover:bg-[#e65000] text-white">
               <Link href="/lp">View Dashboard</Link>
             </Button>
           </div>
@@ -361,7 +361,7 @@ function WithdrawOptionCard({
   selected,
   onClick,
   badge,
-  badgeColor = 'white',
+  badgeColor = 'gray',
   children,
 }: {
   title: string;
@@ -369,13 +369,13 @@ function WithdrawOptionCard({
   selected: boolean;
   onClick: () => void;
   badge?: string;
-  badgeColor?: 'emerald' | 'orange' | 'white';
+  badgeColor?: 'green' | 'orange' | 'gray';
   children?: React.ReactNode;
 }) {
   const badgeStyles = {
-    emerald: 'bg-emerald-500/10 text-emerald-400',
-    orange: 'bg-orange-500/10 text-orange-400',
-    white: 'bg-white/10 text-white/60',
+    green: 'bg-green-100 text-green-700',
+    orange: 'bg-orange-100 text-orange-700',
+    gray: 'bg-gray-100 text-gray-600',
   };
 
   return (
@@ -383,29 +383,29 @@ function WithdrawOptionCard({
       onClick={onClick}
       className={`w-full p-4 rounded-xl text-left transition-all ${
         selected
-          ? 'bg-white/[0.06] border-2 border-white/20'
-          : 'bg-white/[0.02] border border-white/[0.08] hover:bg-white/[0.04]'
+          ? 'bg-orange-50 border-2 border-[#ff5900]'
+          : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
       }`}
     >
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-medium text-white">{title}</span>
+            <span className="font-medium text-[#15191e]">{title}</span>
             {badge && (
               <span className={`text-xs px-2 py-0.5 rounded-full ${badgeStyles[badgeColor]}`}>
                 {badge}
               </span>
             )}
           </div>
-          <p className="text-sm text-white/40 mt-1">{description}</p>
+          <p className="text-sm text-gray-500 mt-1">{description}</p>
         </div>
         <div
           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-            selected ? 'border-white bg-white' : 'border-white/30'
+            selected ? 'border-[#ff5900] bg-[#ff5900]' : 'border-gray-300'
           }`}
         >
           {selected && (
-            <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
             </svg>
           )}
@@ -419,7 +419,7 @@ function WithdrawOptionCard({
 function LoadingSpinner({ dark = false }: { dark?: boolean }) {
   return (
     <svg
-      className={`animate-spin h-4 w-4 ${dark ? 'text-black/50' : 'text-white/50'}`}
+      className={`animate-spin h-4 w-4 ${dark ? 'text-gray-400' : 'text-white/70'}`}
       fill="none"
       viewBox="0 0 24 24"
     >

@@ -48,7 +48,7 @@ export default function AdminSettings() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <Sidebar type="admin" />
 
@@ -57,7 +57,7 @@ export default function AdminSettings() {
           {/* Back Link */}
           <Link
             href="/admin"
-            className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/60 transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#15191e] transition-colors mb-6"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -67,15 +67,15 @@ export default function AdminSettings() {
 
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-white">Pool Settings</h1>
-            <p className="text-white/50 mt-1">Configure protocol parameters</p>
+            <h1 className="text-2xl font-semibold text-[#15191e]">Pool Settings</h1>
+            <p className="text-gray-500 mt-1">Configure protocol parameters</p>
           </div>
 
           {/* Settings Form */}
           <div className="space-y-6">
             {/* Yield Settings */}
-            <section className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-              <h2 className="text-lg font-medium text-white mb-6">Yield Settings</h2>
+            <section className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
+              <h2 className="text-lg font-medium text-[#15191e] mb-6">Yield Settings</h2>
 
               <div className="space-y-6">
                 <SettingField
@@ -87,7 +87,7 @@ export default function AdminSettings() {
                     type="number"
                     value={settings.targetApy}
                     onChange={(e) => handleChange('targetApy', e.target.value)}
-                    className="w-32 bg-white/[0.02] border-white/[0.08] text-white text-right"
+                    className="w-32 bg-gray-50 border-gray-200 text-[#15191e] text-right"
                     step="0.1"
                   />
                 </SettingField>
@@ -95,8 +95,8 @@ export default function AdminSettings() {
             </section>
 
             {/* Capacity Settings */}
-            <section className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-              <h2 className="text-lg font-medium text-white mb-6">Capacity Settings</h2>
+            <section className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
+              <h2 className="text-lg font-medium text-[#15191e] mb-6">Capacity Settings</h2>
 
               <div className="space-y-6">
                 <SettingField
@@ -108,7 +108,7 @@ export default function AdminSettings() {
                     type="number"
                     value={settings.maxFacilitySize}
                     onChange={(e) => handleChange('maxFacilitySize', e.target.value)}
-                    className="w-40 bg-white/[0.02] border-white/[0.08] text-white text-right"
+                    className="w-40 bg-gray-50 border-gray-200 text-[#15191e] text-right"
                     step="100000"
                   />
                 </SettingField>
@@ -122,7 +122,7 @@ export default function AdminSettings() {
                     type="number"
                     value={settings.liquidityBuffer}
                     onChange={(e) => handleChange('liquidityBuffer', e.target.value)}
-                    className="w-32 bg-white/[0.02] border-white/[0.08] text-white text-right"
+                    className="w-32 bg-gray-50 border-gray-200 text-[#15191e] text-right"
                     step="1"
                   />
                 </SettingField>
@@ -130,14 +130,14 @@ export default function AdminSettings() {
             </section>
 
             {/* Withdrawal Settings */}
-            <section className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.08]">
-              <h2 className="text-lg font-medium text-white mb-6">Withdrawal Settings</h2>
+            <section className="p-6 rounded-xl bg-white border border-gray-100 shadow-sm">
+              <h2 className="text-lg font-medium text-[#15191e] mb-6">Withdrawal Settings</h2>
 
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium text-white">Withdrawal Queue</div>
-                    <div className="text-sm text-white/40 mt-1">
+                    <div className="font-medium text-[#15191e]">Withdrawal Queue</div>
+                    <div className="text-sm text-gray-500 mt-1">
                       Enable queued withdrawals when liquidity is insufficient
                     </div>
                   </div>
@@ -156,7 +156,7 @@ export default function AdminSettings() {
                     type="number"
                     value={settings.premiumExitFee}
                     onChange={(e) => handleChange('premiumExitFee', e.target.value)}
-                    className="w-32 bg-white/[0.02] border-white/[0.08] text-white text-right"
+                    className="w-32 bg-gray-50 border-gray-200 text-[#15191e] text-right"
                     step="0.5"
                     disabled={!settings.withdrawalQueueEnabled}
                   />
@@ -169,8 +169,8 @@ export default function AdminSettings() {
               <div className="flex items-center gap-2">
                 {hasChanges && (
                   <>
-                    <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                    <span className="text-sm text-yellow-500">Unsaved changes</span>
+                    <div className="h-2 w-2 rounded-full bg-[#ff5900]" />
+                    <span className="text-sm text-[#ff5900]">Unsaved changes</span>
                   </>
                 )}
               </div>
@@ -179,14 +179,14 @@ export default function AdminSettings() {
                   variant="outline"
                   onClick={handleReset}
                   disabled={!hasChanges}
-                  className="border-white/20 text-white hover:bg-white/5 disabled:opacity-50"
+                  className="border-gray-300 text-[#15191e] hover:bg-gray-100 disabled:opacity-50"
                 >
                   Reset
                 </Button>
                 <Button
                   onClick={handleSave}
                   disabled={!hasChanges || isSaving}
-                  className="bg-white text-black hover:bg-white/90 disabled:opacity-50 min-w-[120px]"
+                  className="bg-[#ff5900] hover:bg-[#e65000] text-white disabled:opacity-50 min-w-[120px]"
                 >
                   {isSaving ? (
                     <span className="flex items-center gap-2">
@@ -205,13 +205,13 @@ export default function AdminSettings() {
           </div>
 
           {/* Info Card */}
-          <div className="mt-8 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+          <div className="mt-8 p-4 rounded-xl bg-blue-50 border border-blue-100">
             <div className="flex gap-3">
-              <svg className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-gray-700">
                   Changes to pool parameters take effect immediately. Please ensure you understand
                   the implications of any changes before saving.
                 </p>
@@ -240,13 +240,13 @@ function SettingField({
   return (
     <div className="flex items-center justify-between gap-4">
       <div className="flex-1">
-        <div className="font-medium text-white">{label}</div>
-        <div className="text-sm text-white/40 mt-1">{description}</div>
+        <div className="font-medium text-[#15191e]">{label}</div>
+        <div className="text-sm text-gray-500 mt-1">{description}</div>
       </div>
       <div className="flex items-center gap-2">
-        {prefix && <span className="text-white/40">{prefix}</span>}
+        {prefix && <span className="text-gray-400">{prefix}</span>}
         {children}
-        {suffix && <span className="text-white/40">{suffix}</span>}
+        {suffix && <span className="text-gray-400">{suffix}</span>}
       </div>
     </div>
   );
