@@ -68,13 +68,89 @@ export default function Home() {
       </section>
 
       {/* Metrics Section */}
-      <section className="border-y border-gray-100 bg-[#15191e]">
+      <section className="border-t border-gray-100 bg-[#15191e]">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div>
             <div className="text-2xl sm:text-3xl text-gray-400 font-medium mb-4">Assets under Management</div>
             <div className="text-8xl sm:text-9xl font-bold tracking-tight tabular-nums text-white">
               $100M
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Everbloom Partner Section */}
+      <section className="relative py-32 overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('/images/everbloom-bg.jpg')`,
+          }}
+        />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/45" />
+
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 mb-8">
+              <span className="text-lg font-medium text-white">In partnership with Everbloom</span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+              Funding for Top Creators
+            </h2>
+
+            <p className="text-xl sm:text-2xl text-gray-200 mb-8 leading-relaxed">
+              Everbloom gives creators the capital, tools and connections to grow their business.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+              <div className="flex items-start gap-3">
+                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className="text-gray-100">Capped platform revenue share, creators always stay in control</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className="text-gray-100">8-16 month contracts or shorter</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className="text-gray-100">Creators keep 100% of their channel and IP</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className="text-gray-100">Fast and flexible process</span>
+              </div>
+            </div>
+
+            <a
+              href="https://everbloom.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[#ff5900] hover:text-[#ff7a33] font-semibold text-lg transition-colors"
+            >
+              Learn more about Everbloom
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>

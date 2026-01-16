@@ -58,12 +58,6 @@ export function Header({ showNav = true }: HeaderProps) {
             >
               Borrow
             </Link>
-            <Link
-              href="/admin"
-              className="px-4 py-2 text-lg font-medium text-gray-600 hover:text-[#15191e] transition-colors rounded-lg hover:bg-gray-50"
-            >
-              About
-            </Link>
           </nav>
         )}
 
