@@ -1,268 +1,271 @@
-import Link from 'next/link';
+'use client';
+
 import { Header } from '@/components/layout/Header';
-import { Button } from '@/components/ui/button';
+import { useWaitlist } from '@/components/WaitlistProvider';
 import { poolMetrics } from '@/lib/dummy-data';
 
-function formatCurrency(value: number): string {
-  if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toFixed(1)}M`;
-  }
-  if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(0)}K`;
-  }
-  return `$${value}`;
-}
-
-function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value);
-}
-
 export default function Home() {
+  const { open } = useWaitlist();
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#f5f5f5', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white">
-
-        <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column - Text */}
-            <div className="max-w-xl">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100 border border-orange-200 mb-6">
-                <div className="h-1.5 w-1.5 rounded-full bg-[#ff5900]" />
-                <span className="text-sm font-medium text-[#ff5900]">Coming Soon</span>
-              </div>
-
-              {/* Main Heading */}
-              <h1 className="text-[6rem] sm:text-[7.5rem] lg:text-[9rem] font-bold text-[#15191e] tracking-tight leading-[0.9] mb-3">
-                Financing
-                <br />
-                <span className="text-[#ff5900] whitespace-nowrap">the future</span>
-              </h1>
-
-              {/* Subheading */}
-              <p className="text-2xl text-gray-600 max-w-xl mb-4 leading-relaxed">
-                Bringing DeFi to traditionally underserved credit markets
-              </p>
-
-              {/* CTA Button */}
-              <div className="flex">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-[#ff5900] hover:bg-[#e65000] text-white font-semibold px-10 h-14 text-lg"
-                >
-                  <Link href="/lp">Earn Now</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Right Column - Abstract Illustration */}
-            <div className="hidden lg:flex items-center justify-center">
-              <HeroIllustration />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Metrics Section */}
-      <section className="border-t border-gray-100 bg-[#15191e]">
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div>
-            <div className="text-2xl sm:text-3xl text-gray-400 font-medium mb-4">Assets under Management</div>
-            <div className="text-8xl sm:text-9xl font-bold tracking-tight tabular-nums text-white">
-              $100M
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Everbloom Partner Section */}
-      <section className="relative py-32 overflow-hidden">
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('/images/everbloom-bg.jpg')`,
-          }}
-        />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/45" />
-
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 mb-8">
-              <span className="text-lg font-medium text-white">In partnership with Everbloom</span>
-            </div>
-
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Funding for Top Creators
-            </h2>
-
-            <p className="text-xl sm:text-2xl text-gray-200 mb-8 leading-relaxed">
-              Everbloom gives creators the capital, tools and connections to grow their business.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="text-gray-100">Capped platform revenue share, creators always stay in control</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="text-gray-100">8-16 month contracts or shorter</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="text-gray-100">Creators keep 100% of their channel and IP</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#ff5900] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="text-gray-100">Fast and flexible process</span>
-              </div>
-            </div>
-
-            <a
-              href="https://everbloom.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[#ff5900] hover:text-[#ff7a33] font-semibold text-lg transition-colors"
-            >
-              Learn more about Everbloom
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#15191e] mb-4">
-              How it works
-            </h2>
-            <p className="text-lg text-gray-600">
-              Simple, transparent, and designed for institutional capital.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard
-              number="01"
-              title="Deposit USDC"
-              description="LPs deposit USDC into the protocol pool and receive pool shares representing their position."
-            />
-            <FeatureCard
-              number="02"
-              title="Fund Creators"
-              description="Capital is deployed through Everbloom to provide advances to vetted content creators."
-            />
-            <FeatureCard
-              number="03"
-              title="Earn Yield"
-              description="As creators repay their advances, yield is automatically distributed to LP positions."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Grid */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard label="Active Loans" value={formatNumber(poolMetrics.totalLoans)} />
-            <StatCard label="Active Creators" value={formatNumber(poolMetrics.activeCreators)} />
-            <StatCard label="Default Rate" value={`${poolMetrics.defaultRate}%`} trend="Low risk" />
-            <StatCard label="Available Liquidity" value={formatCurrency(poolMetrics.liquidity)} />
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#15191e] mb-6">
-                Built for institutional capital
-              </h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Tomorrow Protocol brings institutional-grade infrastructure to creator financing.
-                Real yields backed by real receivables, with full transparency and liquidity.
-              </p>
-              <div className="space-y-4">
-                <TrustPoint text="Diversified creator portfolio reduces concentration risk" />
-                <TrustPoint text="Real-time reporting and full transparency" />
-                <TrustPoint text="Flexible liquidity with withdrawal queue" />
-                <TrustPoint text="Audited smart contracts and institutional custody" />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <InfoCard label="Collection Rate" value="98.2%" />
-              <InfoCard label="Avg Loan Duration" value="8 months" />
-              <InfoCard label="Top 10 Concentration" value="28%" />
-              <InfoCard label="Historical Default" value="<1%" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 bg-[#15191e]">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to earn?
-          </h2>
-          <p className="text-lg text-gray-400 max-w-xl mx-auto mb-8">
-            Join the protocol and start earning sustainable yield from creator financing.
+      {/* Hero */}
+      <section style={{ padding: '128px 0 0', display: 'flex', flexDirection: 'column', gap: '64px' }}>
+        <div style={{ padding: '0 72px' }}>
+          <p style={{ fontSize: '36px', lineHeight: 1, letterSpacing: '-0.04em', color: '#000' }}>
+            Secured stablecoin lending for the creator economy.
+            <br />
+            <button onClick={open} style={{ font: 'inherit', letterSpacing: '-0.04em', color: '#ff5900', background: 'none', border: 'none', padding: 0, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              Join waitlist →
+            </button>
           </p>
-          <Button
-            asChild
-            size="lg"
-            className="bg-[#ff5900] hover:bg-[#e65000] text-white font-semibold px-8 h-12 text-base"
-          >
-            <Link href="/lp">Launch App</Link>
-          </Button>
+        </div>
+
+        {/* Calculator / Showcase Card */}
+        <div style={{ width: '100%', padding: '0 48px' }}>
+          <div style={{
+            width: '100%',
+            position: 'relative',
+            aspectRatio: '16/10',
+            borderRadius: '48px',
+            overflow: 'hidden',
+            backgroundColor: '#15191e',
+          }}>
+            {/* Background image */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url('/images/hero-bg.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.4,
+            }} />
+
+            {/* Marquee at bottom of card */}
+            <div style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 3,
+              overflow: 'hidden',
+              padding: '24px 0',
+            }}>
+              <div className="animate-marquee" style={{ display: 'inline-flex', gap: '64px' }}>
+                {[...Array(2)].map((_, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '64px', alignItems: 'center' }}>
+                    {['Everbloom', 'USDC', 'Solana', 'Anthropic', 'Coinbase', 'Circle', 'Phantom', 'MetaMask', 'Curve', 'Agora'].map((name) => (
+                      <span key={`${i}-${name}`} style={{
+                        flexShrink: 0,
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        color: 'rgba(255,255,255,0.35)',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {name}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2.5">
-              <FooterLogo />
-              <span className="text-lg font-semibold text-[#15191e]">Tomorrow Protocol</span>
+      {/* Intro / Value Prop — scroll-revealed text */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '128px 48px' }}>
+        <p style={{
+          fontSize: '72px',
+          lineHeight: 1,
+          letterSpacing: '-0.04em',
+          color: 'rgba(0,0,0,0.15)',
+        }}>
+          <span style={{ color: '#000' }}>Tomorrow</span>{' '}
+          issues digital creators onchain credit facilities secured against Google Adsense revenue, enabling access to affordable credit without selling content catalogues.
+        </p>
+      </section>
+
+      {/* Design Section — sticky left + scrolling right features */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '128px 48px' }}>
+        {/* Section Header */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: '24px',
+          marginBottom: '64px',
+          borderTop: '1px solid #000',
+        }}>
+          <span style={{ fontSize: '16px', fontWeight: 500, color: '#000', letterSpacing: '-0.04em' }}>How it works</span>
+          <div style={{ display: 'flex', gap: '2px' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#000', display: 'inline-block' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid rgba(0,0,0,0.4)', display: 'inline-block' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid rgba(0,0,0,0.4)', display: 'inline-block' }} />
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '96px' }}>
+          {/* Left — Sticky description */}
+          <div style={{ flex: 2, position: 'sticky', top: '128px', alignSelf: 'flex-start' }}>
+            <p style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em', color: '#000' }}>
+              Simple, transparent, and designed for institutional capital
+            </p>
+          </div>
+
+          {/* Right — Scrolling features */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '96px', paddingTop: '50vh' }}>
+            <div>
+              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Deposit USDC</p>
+              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>LPs deposit USDC into the protocol pool and receive pool shares representing their position.</p>
             </div>
-            <div className="flex items-center gap-8">
-              <a href="#" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">Docs</a>
-              <a href="#" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">Twitter</a>
-              <a href="#" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">Discord</a>
-              <a href="#" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">GitHub</a>
+            <div>
+              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Fund Creators</p>
+              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>Capital is deployed through Everbloom to provide advances to vetted content creators.</p>
             </div>
-            <p className="text-sm text-gray-400">
-              Demo prototype
+            <div>
+              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Earn Yield</p>
+              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>As creators repay their advances, yield is automatically distributed to LP positions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stack Section — 4 cards */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '128px 48px' }}>
+        {/* Header */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}>
+          <div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: '24px',
+              marginBottom: '64px',
+              borderTop: '1px solid #000',
+            }}>
+              <span style={{ fontSize: '16px', fontWeight: 500, color: '#000', letterSpacing: '-0.04em' }}>Trust</span>
+              <div style={{ display: 'flex', gap: '2px' }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#000', display: 'inline-block' }} />
+                <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#000', display: 'inline-block' }} />
+                <span style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid rgba(0,0,0,0.4)', display: 'inline-block' }} />
+              </div>
+            </div>
+
+            <div style={{ width: '60%' }}>
+              <p style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em', color: '#000' }}>
+                Built for institutional capital
+              </p>
+            </div>
+          </div>
+
+          {/* 4 Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+            <StackCard
+              icon={<ShieldIcon />}
+              title="Collection Rate"
+              description="98.2% collection rate across a diversified creator portfolio. Real-time reporting and full transparency."
+            />
+            <StackCard
+              icon={<ClockIcon />}
+              title="Avg Loan Duration"
+              description="8-16 month contracts with predictable repayment schedules. Fast and flexible process."
+            />
+            <StackCard
+              icon={<ChartIcon />}
+              title="Low Concentration"
+              description="Top 10 creators represent only 28% of the portfolio. Well-distributed with no single dependency."
+            />
+            <StackCard
+              icon={<LockIcon />}
+              title="Default Rate"
+              description={<>Historical default rate under 1%. Audited smart contracts and institutional-grade custody.</>}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Borrowers / Target section */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '128px 48px 256px' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: '24px',
+          marginBottom: '64px',
+          borderTop: '1px solid #000',
+        }}>
+          <span style={{ fontSize: '16px', fontWeight: 500, color: '#000', letterSpacing: '-0.04em' }}>For</span>
+          <div style={{ display: 'flex', gap: '2px' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#000', display: 'inline-block' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#000', display: 'inline-block' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#000', display: 'inline-block' }} />
+          </div>
+        </div>
+
+        <p style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em', color: 'rgba(0,0,0,0.5)' }}>
+          Tomorrow Protocol is built for{' '}
+          <span style={{ color: '#000' }}>institutional LPs</span> seeking sustainable yield,{' '}
+          <span style={{ color: '#000' }}>content creators</span> needing capital without selling equity,{' '}
+          <span style={{ color: '#000' }}>DeFi protocols</span> looking for real-world yield, and{' '}
+          <span style={{ color: '#000' }}>family offices</span> diversifying into creator financing.{' '}
+          <button onClick={open} style={{ font: 'inherit', letterSpacing: '-0.04em', color: '#ff5900', background: 'none', border: 'none', padding: 0, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+            Join waitlist →
+          </button>
+        </p>
+      </section>
+
+      {/* Footer — logos marquee + nav */}
+      <footer style={{ backgroundColor: '#ff5900', display: 'flex', flexDirection: 'column' }}>
+        {/* Logo marquee */}
+        <div style={{ width: '100%', overflow: 'hidden', background: '#fff' }}>
+          <div className="animate-marquee" style={{ display: 'inline-flex', gap: '64px', padding: '24px 0' }}>
+            {[...Array(2)].map((_, i) => (
+              <div key={i} style={{ display: 'flex', gap: '64px', alignItems: 'center' }}>
+                {['Everbloom', 'USDC', 'Solana', 'Anthropic', 'Coinbase', 'Circle', 'Phantom', 'MetaMask', 'Curve', 'Agora'].map((name) => (
+                  <span key={`${i}-${name}`} style={{
+                    flexShrink: 0,
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(0,0,0,0.3)',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {name}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer content */}
+        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '128px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <a href="mailto:contact@tomorrowprotocol.xyz" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>Contact</a>
+              <a href="#" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>Docs</a>
+              <a href="#" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>X (fka Twitter)</a>
+            </nav>
+            <span style={{ color: '#fff', fontSize: '16px' }}>Tomorrow Protocol &copy; 2026</span>
+          </div>
+
+          {/* Large logo text */}
+          <div style={{ width: '100%' }}>
+            <p style={{
+              fontSize: 'clamp(48px, 12vw, 160px)',
+              fontWeight: 700,
+              color: 'rgba(255,255,255,0.15)',
+              letterSpacing: '-0.04em',
+              lineHeight: 1,
+              textTransform: 'uppercase',
+            }}>
+              TOMORROW
             </p>
           </div>
         </div>
@@ -271,214 +274,67 @@ export default function Home() {
   );
 }
 
-function MetricDisplay({ label, value, highlight = false }: { label: string; value: string; highlight?: boolean }) {
+/* ─── Stack Card ─── */
+function StackCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: React.ReactNode }) {
   return (
-    <div className="text-center">
-      <div className={`text-4xl sm:text-5xl font-bold tracking-tight mb-2 tabular-nums ${highlight ? 'text-[#ff5900]' : 'text-white'}`}>
-        {value}
+    <div style={{
+      borderRadius: '16px',
+      backgroundColor: '#fff',
+      aspectRatio: '3/4',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      padding: '24px',
+    }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: '12px',
+        border: '1px solid rgba(0,0,0,0.05)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#000',
+      }}>
+        {icon}
       </div>
-      <div className="text-sm text-gray-400 font-medium">{label}</div>
-    </div>
-  );
-}
-
-function FeatureCard({ number, title, description }: { number: string; title: string; description: string }) {
-  return (
-    <div className="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all">
-      <div className="text-sm text-[#ff5900] font-semibold mb-4">{number}</div>
-      <h3 className="text-xl font-semibold text-[#15191e] mb-3">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
-    </div>
-  );
-}
-
-function StatCard({ label, value, trend }: { label: string; value: string; trend?: string }) {
-  return (
-    <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm">
-      <div className="text-2xl sm:text-3xl font-bold text-[#15191e] tabular-nums mb-1">{value}</div>
-      <div className="text-sm text-gray-500">{label}</div>
-      {trend && <div className="text-xs text-green-600 font-medium mt-2">{trend}</div>}
-    </div>
-  );
-}
-
-function TrustPoint({ text }: { text: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="h-5 w-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-        <svg className="h-3 w-3 text-[#ff5900]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-        </svg>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <p style={{ fontSize: '18px', color: '#000', letterSpacing: '-0.02em', fontWeight: 500 }}>{title}</p>
+        <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)', lineHeight: 1.5 }}>{description}</p>
       </div>
-      <span className="text-gray-700">{text}</span>
     </div>
   );
 }
 
-function InfoCard({ label, value }: { label: string; value: string }) {
+/* ─── Icons ─── */
+function ShieldIcon() {
   return (
-    <div className="p-6 rounded-xl bg-gray-50 border border-gray-100">
-      <div className="text-2xl font-bold text-[#15191e] tabular-nums mb-1">{value}</div>
-      <div className="text-sm text-gray-500">{label}</div>
-    </div>
-  );
-}
-
-function FooterLogo() {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="flex-shrink-0"
-    >
-      <circle cx="16" cy="16" r="16" fill="#ff5900" />
-      <path
-        d="M6 20 Q16 14 26 20"
-        stroke="white"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <circle cx="16" cy="14" r="5" fill="white" />
-      <g stroke="white" strokeWidth="1.5" strokeLinecap="round">
-        <line x1="16" y1="6" x2="16" y2="4" />
-        <line x1="21" y1="9" x2="22.5" y2="7.5" />
-        <line x1="23" y1="14" x2="25" y2="14" />
-        <line x1="11" y1="9" x2="9.5" y2="7.5" />
-        <line x1="9" y1="14" x2="7" y2="14" />
-      </g>
-      <path
-        d="M16 28 L16 23 M13 25.5 L16 23 L19 25.5"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.8"
-      />
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
     </svg>
   );
 }
 
-function HeroIllustration() {
+function ClockIcon() {
   return (
-    <div className="relative w-full max-w-lg aspect-square">
-      <svg
-        viewBox="0 0 500 500"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
-      >
-        {/* Background glow */}
-        <defs>
-          <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#ff5900" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#ff5900" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="sunriseGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#ff5900" stopOpacity="0.1" />
-            <stop offset="50%" stopColor="#ff5900" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#ff7a33" stopOpacity="0.6" />
-          </linearGradient>
-          <linearGradient id="pathGradient1" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ff5900" />
-            <stop offset="100%" stopColor="#ff7a33" />
-          </linearGradient>
-          <linearGradient id="pathGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#15191e" />
-            <stop offset="100%" stopColor="#374151" />
-          </linearGradient>
-        </defs>
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
 
-        {/* Soft glow background */}
-        <circle cx="250" cy="250" r="200" fill="url(#glowGradient)" />
+function ChartIcon() {
+  return (
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+    </svg>
+  );
+}
 
-        {/* Rising sun / horizon */}
-        <path
-          d="M100 320 Q250 220 400 320"
-          fill="url(#sunriseGradient)"
-        />
-
-        {/* Horizon line */}
-        <path
-          d="M80 320 Q250 240 420 320"
-          stroke="#ff5900"
-          strokeWidth="2"
-          fill="none"
-          strokeOpacity="0.3"
-        />
-
-        {/* Abstract rising curves - representing growth */}
-        <path
-          d="M120 380 Q180 300 250 280 Q320 260 380 200"
-          stroke="url(#pathGradient1)"
-          strokeWidth="4"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path
-          d="M140 400 Q200 340 270 320 Q340 300 400 260"
-          stroke="url(#pathGradient2)"
-          strokeWidth="3"
-          fill="none"
-          strokeLinecap="round"
-          strokeOpacity="0.6"
-        />
-        <path
-          d="M100 360 Q160 280 230 260 Q300 240 360 180"
-          stroke="#ff5900"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-          strokeOpacity="0.4"
-        />
-
-        {/* Central radiant sun element */}
-        <circle cx="250" cy="200" r="60" fill="#ff5900" fillOpacity="0.1" />
-        <circle cx="250" cy="200" r="45" fill="#ff5900" fillOpacity="0.15" />
-        <circle cx="250" cy="200" r="30" fill="#ff5900" fillOpacity="0.2" />
-        <circle cx="250" cy="200" r="18" fill="#ff5900" />
-
-        {/* Radiating lines from sun */}
-        <g stroke="#ff5900" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.3">
-          <line x1="250" y1="130" x2="250" y2="110" />
-          <line x1="290" y1="140" x2="305" y2="125" />
-          <line x1="320" y1="170" x2="340" y2="160" />
-          <line x1="320" y1="210" x2="340" y2="220" />
-          <line x1="210" y1="140" x2="195" y2="125" />
-          <line x1="180" y1="170" x2="160" y2="160" />
-          <line x1="180" y1="210" x2="160" y2="220" />
-        </g>
-
-        {/* Floating particles / stars */}
-        <circle cx="150" cy="150" r="4" fill="#ff5900" fillOpacity="0.6" />
-        <circle cx="350" cy="130" r="3" fill="#ff5900" fillOpacity="0.5" />
-        <circle cx="380" cy="180" r="5" fill="#ff5900" fillOpacity="0.4" />
-        <circle cx="120" cy="200" r="3" fill="#15191e" fillOpacity="0.3" />
-        <circle cx="400" cy="280" r="4" fill="#15191e" fillOpacity="0.4" />
-        <circle cx="100" cy="280" r="3" fill="#ff5900" fillOpacity="0.5" />
-        <circle cx="320" cy="100" r="2" fill="#ff5900" fillOpacity="0.6" />
-        <circle cx="180" cy="120" r="2" fill="#15191e" fillOpacity="0.4" />
-
-        {/* Abstract connector nodes */}
-        <circle cx="380" cy="200" r="8" fill="#15191e" />
-        <circle cx="360" cy="180" r="6" fill="#ff5900" fillOpacity="0.8" />
-        <circle cx="230" cy="260" r="6" fill="#15191e" fillOpacity="0.6" />
-        <circle cx="270" cy="320" r="5" fill="#ff5900" fillOpacity="0.7" />
-
-        {/* Upward arrow element - representing progress */}
-        <path
-          d="M430 300 L450 270 L470 300 M450 270 L450 340"
-          stroke="#ff5900"
-          strokeWidth="3"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeOpacity="0.6"
-        />
-      </svg>
-    </div>
+function LockIcon() {
+  return (
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+    </svg>
   );
 }

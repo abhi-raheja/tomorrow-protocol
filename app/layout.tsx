@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { WaitlistProvider } from "@/components/WaitlistProvider";
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${urbanist.variable} font-sans antialiased`}>
-        {children}
+        <WaitlistProvider>
+          {children}
+        </WaitlistProvider>
         <Toaster />
       </body>
     </html>

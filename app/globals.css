@@ -46,43 +46,32 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* Brex-inspired Light Theme */
 :root {
   --radius: 0.5rem;
-  /* Light backgrounds */
   --background: #ffffff;
   --foreground: #15191e;
-  /* Cards */
   --card: #ffffff;
   --card-foreground: #15191e;
   --popover: #ffffff;
   --popover-foreground: #15191e;
-  /* Primary - Brex Orange */
   --primary: #ff5900;
   --primary-foreground: #ffffff;
-  /* Secondary */
   --secondary: #f4f4f5;
   --secondary-foreground: #15191e;
-  /* Muted */
   --muted: #f9f9fb;
   --muted-foreground: #71717a;
-  /* Accent */
   --accent: #fff7ed;
   --accent-foreground: #ff5900;
-  /* Destructive */
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  /* Borders */
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #ff5900;
-  /* Chart colors */
   --chart-1: #ff5900;
   --chart-2: #15191e;
   --chart-3: #3b82f6;
   --chart-4: #10b981;
   --chart-5: #8b5cf6;
-  /* Sidebar */
   --sidebar: #15191e;
   --sidebar-foreground: #ffffff;
   --sidebar-primary: #ff5900;
@@ -91,12 +80,10 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #374151;
   --sidebar-ring: #ff5900;
-  /* Custom */
   --success: #10b981;
   --warning: #f59e0b;
 }
 
-/* Dark mode option */
 .dark {
   --background: #15191e;
   --foreground: #f9f9fb;
@@ -136,70 +123,51 @@
   }
 }
 
-@layer utilities {
-  /* Brex-style gradient background */
-  .brex-gradient {
-    background: linear-gradient(135deg, #fff7ed 0%, #ffffff 50%, #f9f9fb 100%);
-  }
+/* Waitlist modal animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-  /* Orange glow effect */
-  .orange-glow {
-    box-shadow: 0 0 40px rgba(255, 89, 0, 0.15);
-  }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  /* Card hover effect */
-  .card-hover {
-    transition: all 0.2s ease;
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
   }
-  .card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(21, 25, 30, 0.12);
-  }
-
-  /* Brex-style button */
-  .brex-button {
-    background: #ff5900;
-    color: white;
-    font-weight: 600;
-    transition: all 0.2s ease;
-  }
-  .brex-button:hover {
-    background: #e65000;
-    transform: translateY(-1px);
-  }
-
-  /* Dark card style for contrast sections */
-  .dark-card {
-    background: #15191e;
-    color: #ffffff;
-  }
-
-  /* Tabular numbers for data */
-  .tabular-nums {
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Metric styling */
-  .metric-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  /* Section spacing */
-  .section-padding {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-
-  /* Subtle border style */
-  .subtle-border {
-    border: 1px solid rgba(0, 0, 0, 0.08);
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-/* Custom scrollbar - light theme */
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Section pagination dots */
+.section-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d1d5db;
+  transition: all 0.3s ease;
+}
+
+.section-dot.active {
+  background: #ff5900;
+  width: 24px;
+  border-radius: 3px;
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -218,8 +186,13 @@
   background: #a1a1aa;
 }
 
-/* Selection styling with Brex orange */
 ::selection {
   background: rgba(255, 89, 0, 0.2);
   color: #15191e;
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
 }

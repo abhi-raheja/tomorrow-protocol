@@ -1,219 +1,77 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { useWaitlist } from '@/components/WaitlistProvider';
 
 interface HeaderProps {
   showNav?: boolean;
 }
 
 export function Header({ showNav = true }: HeaderProps) {
-  const [isConnected, setIsConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
-  const [showWalletModal, setShowWalletModal] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-
-  const connectWallet = async () => {
-    setIsConnecting(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setIsConnected(true);
-    setWalletAddress('0x1234...abcd');
-    setIsConnecting(false);
-    setShowWalletModal(false);
-  };
-
-  const disconnectWallet = () => {
-    setIsConnected(false);
-    setWalletAddress('');
-  };
+  const { open } = useWaitlist();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-6">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <TomorrowLogo />
-          <span className="text-lg font-semibold text-[#15191e]">Tomorrow</span>
-        </Link>
+    <header style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      height: '64px',
+      padding: '0 24px',
+      background: 'transparent',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    }}>
+      {/* Logo */}
+      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+        <TomorrowLogo />
+      </Link>
 
-        {/* Navigation */}
+      {/* Right Actions */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         {showNav && (
-          <nav className="hidden md:flex items-center gap-1">
-            <Link
-              href="/lp"
-              className="px-4 py-2 text-lg font-medium text-gray-600 hover:text-[#15191e] transition-colors rounded-lg hover:bg-gray-50"
-            >
-              Earn
-            </Link>
-            <Link
-              href="/borrower"
-              className="px-4 py-2 text-lg font-medium text-gray-600 hover:text-[#15191e] transition-colors rounded-lg hover:bg-gray-50"
-            >
-              Borrow
-            </Link>
-          </nav>
+          <Link href="/lp" style={{
+            fontSize: '13px',
+            fontWeight: 500,
+            color: '#000',
+            padding: '6px 16px',
+            border: '1px solid rgba(0,0,0,0.2)',
+            borderRadius: '100px',
+            textDecoration: 'none',
+            background: 'none',
+          }}>
+            Earn
+          </Link>
         )}
-
-        {/* Wallet Connection */}
-        <div className="flex items-center gap-3">
-          {isConnected ? (
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 border border-gray-200">
-                <div className="h-2 w-2 rounded-full bg-green-500" />
-                <span className="text-sm font-medium text-gray-700">{walletAddress}</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={disconnectWallet}
-                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              >
-                Disconnect
-              </Button>
-            </div>
-          ) : (
-            <>
-              <Button
-                variant="outline"
-                className="border-gray-300 text-[#15191e] hover:bg-gray-100 font-medium px-5"
-              >
-                Get Help
-              </Button>
-              <Button
-                onClick={() => setShowWalletModal(true)}
-                className="bg-[#ff5900] hover:bg-[#e65000] text-white font-medium px-5"
-              >
-                Enter App
-              </Button>
-            </>
-          )}
-        </div>
+        <button
+          onClick={open}
+          style={{
+            fontSize: '13px',
+            fontWeight: 500,
+            color: '#fff',
+            padding: '6px 16px',
+            border: '1px solid #000',
+            borderRadius: '100px',
+            background: '#000',
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+          }}
+        >
+          Join Waitlist
+        </button>
       </div>
-
-      {/* Wallet Modal */}
-      <Dialog open={showWalletModal} onOpenChange={setShowWalletModal}>
-        <DialogContent className="sm:max-w-md bg-white border-gray-200">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-[#15191e]">Connect Wallet</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-2 py-4">
-            <WalletOption
-              name="MetaMask"
-              icon="M"
-              iconBg="bg-orange-500"
-              onClick={connectWallet}
-              isConnecting={isConnecting}
-            />
-            <WalletOption
-              name="WalletConnect"
-              icon="W"
-              iconBg="bg-blue-500"
-              onClick={connectWallet}
-              isConnecting={isConnecting}
-            />
-            <WalletOption
-              name="Coinbase Wallet"
-              icon="C"
-              iconBg="bg-blue-600"
-              onClick={connectWallet}
-              isConnecting={isConnecting}
-            />
-            <WalletOption
-              name="Phantom"
-              icon="P"
-              iconBg="bg-purple-500"
-              onClick={connectWallet}
-              isConnecting={isConnecting}
-            />
-          </div>
-          <p className="text-xs text-gray-400 text-center pb-2">
-            By connecting, you agree to the Terms of Service
-          </p>
-        </DialogContent>
-      </Dialog>
     </header>
-  );
-}
-
-function WalletOption({
-  name,
-  icon,
-  iconBg,
-  onClick,
-  isConnecting,
-}: {
-  name: string;
-  icon: string;
-  iconBg: string;
-  onClick: () => void;
-  isConnecting: boolean;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={isConnecting}
-      className="flex items-center gap-4 w-full p-4 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-100 hover:border-gray-200 transition-all disabled:opacity-50"
-    >
-      <div className={`h-10 w-10 rounded-xl ${iconBg} flex items-center justify-center`}>
-        <span className="text-white font-semibold">{icon}</span>
-      </div>
-      <span className="font-medium text-[#15191e]">
-        {isConnecting ? 'Connecting...' : name}
-      </span>
-    </button>
   );
 }
 
 function TomorrowLogo() {
   return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="flex-shrink-0"
-    >
-      {/* Background circle */}
-      <circle cx="16" cy="16" r="16" fill="#ff5900" />
-
-      {/* Horizon line */}
-      <path
-        d="M6 20 Q16 14 26 20"
-        stroke="white"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-
-      {/* Rising sun */}
-      <circle cx="16" cy="14" r="5" fill="white" />
-
-      {/* Sun rays */}
-      <g stroke="white" strokeWidth="1.5" strokeLinecap="round">
-        <line x1="16" y1="6" x2="16" y2="4" />
-        <line x1="21" y1="9" x2="22.5" y2="7.5" />
-        <line x1="23" y1="14" x2="25" y2="14" />
-        <line x1="11" y1="9" x2="9.5" y2="7.5" />
-        <line x1="9" y1="14" x2="7" y2="14" />
-      </g>
-
-      {/* Upward arrow beneath horizon */}
-      <path
-        d="M16 28 L16 23 M13 25.5 L16 23 L19 25.5"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.8"
-      />
+    <svg width="28" height="23" viewBox="0 0 113 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M103.84 76.0151C106.138 76.0151 108 78.2537 108 81.0151C108 83.7766 106.138 86.0151 103.84 86.0151H9.15994C6.86247 86.0151 5 83.7766 5 81.0151C5 78.2537 6.86247 76.0151 9.15994 76.0151H103.84Z" stroke="#ff5900" strokeWidth="10" strokeLinecap="round"/>
+      <path d="M101.563 5.81087C103.486 4.33664 106.064 4.96947 107.321 7.22438C108.579 9.47931 108.039 12.5025 106.116 13.9767L56.5 52.0151L6.88396 13.9767C4.96105 12.5025 4.42139 9.47931 5.67857 7.22438C6.93577 4.96947 9.51384 4.33664 11.4368 5.81087L56.5 40.3587L101.563 5.81087Z" stroke="#ff5900" strokeWidth="10" strokeLinecap="round"/>
     </svg>
   );
 }
