@@ -147,8 +147,8 @@ export default function Home() {
             />
             <StackCard
               icon={<ChartIcon />}
-              title="Low Concentration"
-              description="Top 10 creators represent only 28% of the portfolio. Well-distributed with no single dependency."
+              title="First-Loss Buffer"
+              description="Originators and underwriters put skin in the game by providing first-loss capital before LP capital is touched when defaults occur."
             />
             <StackCard
               icon={<LockIcon />}
@@ -178,11 +178,11 @@ export default function Home() {
         </div>
 
         <p style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em', color: 'rgba(0,0,0,0.5)' }}>
-          Tomorrow Protocol is built for{' '}
-          <span style={{ color: '#000' }}>institutional LPs</span> seeking sustainable yield,{' '}
-          <span style={{ color: '#000' }}>content creators</span> needing capital without selling equity,{' '}
-          <span style={{ color: '#000' }}>DeFi protocols</span> looking for real-world yield, and{' '}
-          <span style={{ color: '#000' }}>family offices</span> diversifying into creator financing.{' '}
+          Tomorrow is built for{' '}
+          <span style={{ color: '#000' }}>DeFi protocols</span> seeking real-world yield,{' '}
+          <span style={{ color: '#000' }}>institutional investors</span> diversifying exposure to the creator economy,{' '}
+          <span style={{ color: '#000' }}>credit underwriters and originators</span> looking to lower their cost of capital, and{' '}
+          <span style={{ color: '#000' }}>digital creators</span> requiring capital without selling their catalogues.{' '}
           <button onClick={open} style={{ font: 'inherit', letterSpacing: '-0.04em', color: '#ff5900', background: 'none', border: 'none', padding: 0, cursor: 'pointer', whiteSpace: 'nowrap' }}>
             Join waitlist →
           </button>
@@ -196,9 +196,7 @@ export default function Home() {
         <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '128px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <a href="mailto:contact@tomorrowprotocol.xyz" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>Contact</a>
-              <a href="#" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>Docs</a>
-              <a href="#" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>X (fka Twitter)</a>
+              <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>X (fka Twitter)</a>
             </nav>
             <span style={{ color: '#fff', fontSize: '16px' }}>Tomorrow Protocol &copy; 2026</span>
           </div>
@@ -247,8 +245,8 @@ function StackCard({ icon, title, description }: { icon: React.ReactNode; title:
         {icon}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <p style={{ fontSize: '18px', color: '#000', letterSpacing: '-0.02em', fontWeight: 500 }}>{title}</p>
-        <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)', lineHeight: 1.5 }}>{description}</p>
+        <p style={{ fontSize: '18px', color: '#000', letterSpacing: '-0.02em', fontWeight: 500, minHeight: '44px' }}>{title}</p>
+        <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)', lineHeight: 1.5, minHeight: '120px' }}>{description}</p>
       </div>
     </div>
   );

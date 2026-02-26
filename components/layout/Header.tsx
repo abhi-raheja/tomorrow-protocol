@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useState, useEffect, useCallback } from 'react';
 import { useWaitlist } from '@/components/WaitlistProvider';
 
 interface HeaderProps {
@@ -9,6 +10,16 @@ interface HeaderProps {
 
 export function Header({ showNav = true }: HeaderProps) {
   const { open } = useWaitlist();
+  const [scrolled, setScrolled] = useState(false);
+
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 20);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   return (
     <header style={{
@@ -19,7 +30,11 @@ export function Header({ showNav = true }: HeaderProps) {
       zIndex: 1000,
       height: '64px',
       padding: '0 24px',
-      background: 'transparent',
+      background: scrolled ? 'rgba(245, 245, 245, 0.7)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(16px)' : 'none',
+      WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(0,0,0,0.06)' : '1px solid transparent',
+      transition: 'background 0.3s ease, backdrop-filter 0.3s ease, border-bottom 0.3s ease',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
