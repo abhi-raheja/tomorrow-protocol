@@ -113,23 +113,23 @@ export default function Home() {
           {/* Left — Sticky description */}
           <div style={{ flex: 2, position: 'sticky', top: '128px', alignSelf: 'flex-start' }}>
             <p style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em', color: '#000' }}>
-              Creator economy is systemically underserved by tradfi. Tomorrow fills the gap.
+              Creator economy is systemically underserved by tradfi. <span style={{ color: '#ff5900' }}>Tomorrow fills the gap.</span>
             </p>
           </div>
 
           {/* Right — Scrolling features */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '96px', paddingTop: '50vh' }}>
             <div>
-              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Deposit USDC</p>
-              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>LPs deposit USDC into the protocol pool and receive pool shares representing their position.</p>
+              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Fully onchain</p>
+              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>Blockchain-native credit financing eliminates the overhead of traditional lending via reduced origination costs, faster capital deployment, and more efficient loan servicing.</p>
             </div>
             <div>
-              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Fund Creators</p>
-              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>Capital is deployed through Everbloom to provide advances to vetted content creators.</p>
+              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Secured against future cash flows</p>
+              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>Creator revenue streams are tokenized as digital receivables. LPs hold a perfected security interest in the loan pool, providing enforceable protection in the event of borrower default.</p>
             </div>
             <div>
-              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Earn Yield</p>
-              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>As creators repay their advances, yield is automatically distributed to LP positions.</p>
+              <p style={{ fontSize: '16px', fontWeight: 500, color: '#000', marginBottom: '4px' }}>Specialized underwriting</p>
+              <p style={{ fontSize: '16px', color: 'rgba(0,0,0,0.5)' }}>Rather than bootstrapping underwriting in-house, we partner with proven originators who have deep expertise and track records, so capital flows through the best operators, not around them.</p>
             </div>
           </div>
         </div>
@@ -167,13 +167,13 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
             <StackCard
               icon={<ShieldIcon />}
-              title="Collection Rate"
-              description="98.2% collection rate across a diversified creator portfolio. Real-time reporting and full transparency."
+              title="Professional Risk Management"
+              description="We work with specialized originators and underwriters with a multi-year track record and deep relationships within the creator economy."
             />
             <StackCard
               icon={<ClockIcon />}
-              title="Avg Loan Duration"
-              description="8-16 month contracts with predictable repayment schedules. Fast and flexible process."
+              title="Average Loan Duration"
+              description="Creator loans range from 3-12 month contracts with strong protection rights and predictable repayment schedules."
             />
             <StackCard
               icon={<ChartIcon />}
