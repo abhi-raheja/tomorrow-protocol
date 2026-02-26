@@ -44,36 +44,6 @@ export default function Home() {
               opacity: 0.4,
             }} />
 
-            {/* Marquee at bottom of card */}
-            <div style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 3,
-              overflow: 'hidden',
-              padding: '24px 0',
-            }}>
-              <div className="animate-marquee" style={{ display: 'inline-flex', gap: '64px' }}>
-                {[...Array(2)].map((_, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '64px', alignItems: 'center' }}>
-                    {['Everbloom', 'USDC', 'Solana', 'Anthropic', 'Coinbase', 'Circle', 'Phantom', 'MetaMask', 'Curve', 'Agora'].map((name) => (
-                      <span key={`${i}-${name}`} style={{
-                        flexShrink: 0,
-                        fontSize: '14px',
-                        fontWeight: 500,
-                        letterSpacing: '0.05em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.35)',
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {name}
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -221,28 +191,6 @@ export default function Home() {
 
       {/* Footer — logos marquee + nav */}
       <footer style={{ backgroundColor: '#ff5900', display: 'flex', flexDirection: 'column' }}>
-        {/* Logo marquee */}
-        <div style={{ width: '100%', overflow: 'hidden', background: '#fff' }}>
-          <div className="animate-marquee" style={{ display: 'inline-flex', gap: '64px', padding: '24px 0' }}>
-            {[...Array(2)].map((_, i) => (
-              <div key={i} style={{ display: 'flex', gap: '64px', alignItems: 'center' }}>
-                {['Everbloom', 'USDC', 'Solana', 'Anthropic', 'Coinbase', 'Circle', 'Phantom', 'MetaMask', 'Curve', 'Agora'].map((name) => (
-                  <span key={`${i}-${name}`} style={{
-                    flexShrink: 0,
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(0,0,0,0.3)',
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {name}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* Footer content */}
         <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '128px' }}>

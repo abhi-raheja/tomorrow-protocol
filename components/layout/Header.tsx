@@ -32,20 +32,6 @@ export function Header({ showNav = true }: HeaderProps) {
 
       {/* Right Actions */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {showNav && (
-          <Link href="/lp" style={{
-            fontSize: '13px',
-            fontWeight: 500,
-            color: '#000',
-            padding: '6px 16px',
-            border: '1px solid rgba(0,0,0,0.2)',
-            borderRadius: '100px',
-            textDecoration: 'none',
-            background: 'none',
-          }}>
-            Earn
-          </Link>
-        )}
         <button
           onClick={open}
           style={{
