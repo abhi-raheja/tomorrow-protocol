@@ -2,6 +2,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { useWaitlist } from '@/components/WaitlistProvider';
+import { ScrollHighlightText } from '@/components/ScrollHighlightText';
 import { poolMetrics } from '@/lib/dummy-data';
 
 export default function Home() {
@@ -79,15 +80,14 @@ export default function Home() {
 
       {/* Intro / Value Prop — scroll-revealed text */}
       <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '128px 48px' }}>
-        <p style={{
-          fontSize: '72px',
-          lineHeight: 1,
-          letterSpacing: '-0.04em',
-          color: 'rgba(0,0,0,0.15)',
-        }}>
-          <span style={{ color: '#000' }}>Tomorrow</span>{' '}
-          issues digital creators onchain credit facilities secured against Google Adsense revenue, enabling access to affordable credit without selling content catalogues.
-        </p>
+        <ScrollHighlightText
+          text="Tomorrow issues digital creators onchain credit facilities secured against Google Adsense revenue, enabling access to affordable credit without selling content catalogues."
+          style={{
+            fontSize: '72px',
+            lineHeight: 1,
+            letterSpacing: '-0.04em',
+          }}
+        />
       </section>
 
       {/* Design Section — sticky left + scrolling right features */}
@@ -113,7 +113,7 @@ export default function Home() {
           {/* Left — Sticky description */}
           <div style={{ flex: 2, position: 'sticky', top: '128px', alignSelf: 'flex-start' }}>
             <p style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em', color: '#000' }}>
-              Simple, transparent, and designed for institutional capital
+              Creator economy is systemically underserved by tradfi. Tomorrow fills the gap.
             </p>
           </div>
 
