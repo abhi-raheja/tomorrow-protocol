@@ -1,19 +1,36 @@
 'use client';
 
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
   Area,
   AreaChart,
+  type TooltipContentProps,
 } from 'recharts';
 import { apyHistory, tvlHistory } from '@/lib/dummy-data';
 
 interface ChartProps {
   type: 'apy' | 'tvl';
+}
+
+type YieldChartTooltipProps = Partial<TooltipContentProps<number, string>> & {
+  formatValue: (value: number) => string;
+};
+
+function YieldChartTooltip({ active, payload, label, formatValue }: YieldChartTooltipProps) {
+  const rawValue = payload?.[0]?.value;
+  if (!active || typeof rawValue !== 'number') {
+    return null;
+  }
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-lg">
+      <p className="text-xs text-gray-500 mb-1">{typeof label === 'string' ? label : ''}</p>
+      <p className="text-sm font-medium text-[#15191e]">{formatValue(rawValue)}</p>
+    </div>
+  );
 }
 
 export function YieldChart({ type }: ChartProps) {
@@ -26,20 +43,6 @@ export function YieldChart({ type }: ChartProps) {
       return `$${(value / 1_000_000).toFixed(1)}M`;
     }
     return `${value}%`;
-  };
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-lg">
-          <p className="text-xs text-gray-500 mb-1">{label}</p>
-          <p className="text-sm font-medium text-[#15191e]">
-            {formatValue(payload[0].value)}
-          </p>
-        </div>
-      );
-    }
-    return null;
   };
 
   return (
@@ -66,7 +69,7 @@ export function YieldChart({ type }: ChartProps) {
             tickFormatter={formatValue}
             width={50}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<YieldChartTooltip formatValue={formatValue} />} />
           <Area
             type="monotone"
             dataKey={dataKey}

@@ -4,11 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
 import { useWaitlist } from '@/components/WaitlistProvider';
 
-interface HeaderProps {
-  showNav?: boolean;
-}
-
-export function Header({ showNav = true }: HeaderProps) {
+export function Header() {
   const { open } = useWaitlist();
   const [scrolled, setScrolled] = useState(false);
 

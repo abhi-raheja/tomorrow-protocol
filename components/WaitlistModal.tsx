@@ -10,6 +10,7 @@ interface WaitlistModalProps {
 export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
   const [email, setEmail] = useState('');
   const [xHandle, setXHandle] = useState('');
+  const [website, setWebsite] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -18,7 +19,10 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
     e.preventDefault();
     setError('');
 
-    if (!email) {
+    const normalizedEmail = email.trim();
+    const normalizedXHandle = xHandle.trim();
+
+    if (!normalizedEmail) {
       setError('Email is required.');
       return;
     }
@@ -29,15 +33,31 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, xHandle }),
+        body: JSON.stringify({
+          email: normalizedEmail,
+          xHandle: normalizedXHandle,
+          website,
+        }),
       });
 
-      if (!res.ok) throw new Error('Failed to submit');
+      let responseBody: { error?: string } | null = null;
+      try {
+        responseBody = (await res.json()) as { error?: string };
+      } catch {
+        responseBody = null;
+      }
+
+      if (!res.ok) {
+        throw new Error(responseBody?.error || 'Unable to submit right now. Please try again.');
+      }
 
       setIsSuccess(true);
-    } catch {
-      // Fallback: still show success for now (API not wired yet)
-      setIsSuccess(true);
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : 'Unable to submit right now. Please try again.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -49,6 +69,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
     setTimeout(() => {
       setEmail('');
       setXHandle('');
+      setWebsite('');
       setIsSuccess(false);
       setError('');
     }, 200);
@@ -92,6 +113,8 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
         {/* Close button */}
         <button
           onClick={handleClose}
+          type="button"
+          aria-label="Close waitlist modal"
           style={{
             position: 'absolute',
             top: '20px',
@@ -145,16 +168,47 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
             </div>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {/* Honeypot field */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  top: 0,
+                  width: 1,
+                  height: 1,
+                  overflow: 'hidden',
+                  opacity: 0,
+                  pointerEvents: 'none',
+                }}
+              >
+                <label htmlFor="waitlist-website">Website</label>
+                <input
+                  id="waitlist-website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                />
+              </div>
+
               {/* Email */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '14px', fontWeight: 500, color: '#000' }}>
                   Email
                 </label>
                 <input
+                  name="email"
                   type="email"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  maxLength={254}
+                  required
+                  aria-invalid={error ? 'true' : 'false'}
                   style={{
                     fontSize: '16px',
                     color: '#000',
@@ -174,10 +228,13 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
                   X (Twitter) <span style={{ color: 'rgba(0,0,0,0.3)', fontWeight: 400 }}>optional</span>
                 </label>
                 <input
+                  name="xHandle"
                   type="text"
                   placeholder="@handle"
                   value={xHandle}
                   onChange={(e) => setXHandle(e.target.value)}
+                  autoComplete="off"
+                  maxLength={16}
                   style={{
                     fontSize: '16px',
                     color: '#000',

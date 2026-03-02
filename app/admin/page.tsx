@@ -24,6 +24,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  type TooltipContentProps,
 } from 'recharts';
 import {
   poolMetrics,
@@ -456,23 +457,31 @@ function MetricCard({
   );
 }
 
-function CustomTooltip({ active, payload, label, suffix = '' }: any) {
-  if (active && payload && payload.length) {
+type ChartTooltipProps = Partial<TooltipContentProps<number, string>> & {
+  suffix?: string;
+};
+
+function CustomTooltip({ active, payload, label, suffix = '' }: ChartTooltipProps) {
+  const value = payload?.[0]?.value;
+  if (active && typeof value === 'number') {
     return (
       <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-lg">
-        <p className="text-xs text-gray-500 mb-1">{label}</p>
-        <p className="text-sm font-medium text-[#15191e]">{payload[0].value}{suffix}</p>
+        <p className="text-xs text-gray-500 mb-1">{typeof label === 'string' ? label : ''}</p>
+        <p className="text-sm font-medium text-[#15191e]">{value}{suffix}</p>
       </div>
     );
   }
   return null;
 }
 
-function PieTooltip({ active, payload }: any) {
-  if (active && payload && payload.length) {
+function PieTooltip({ active, payload }: Partial<TooltipContentProps<number, string>>) {
+  const item = payload?.[0];
+  if (active && typeof item?.value === 'number') {
     return (
       <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-lg">
-        <p className="text-sm font-medium text-[#15191e]">{payload[0].name}: {payload[0].value}%</p>
+        <p className="text-sm font-medium text-[#15191e]">
+          {typeof item.name === 'string' ? item.name : 'Segment'}: {item.value}%
+        </p>
       </div>
     );
   }

@@ -3,7 +3,6 @@
 import { Header } from '@/components/layout/Header';
 import { useWaitlist } from '@/components/WaitlistProvider';
 import { ScrollHighlightText } from '@/components/ScrollHighlightText';
-import { poolMetrics } from '@/lib/dummy-data';
 
 export default function Home() {
   const { open } = useWaitlist();

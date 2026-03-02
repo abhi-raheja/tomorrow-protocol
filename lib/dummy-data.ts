@@ -29,13 +29,6 @@ export const tvlHistory = [
   { month: 'Jan', tvl: 2_500_000 },
 ];
 
-// Sample LP Positions
-export const lpPositions = [
-  { id: 1, address: '0x1234...abcd', deposited: 250_000, shares: 245_000, yield: 12_500, depositDate: '2024-09-15' },
-  { id: 2, address: '0x5678...efgh', deposited: 500_000, shares: 490_000, yield: 26_800, depositDate: '2024-08-01' },
-  { id: 3, address: '0x9abc...ijkl', deposited: 100_000, shares: 98_500, yield: 4_200, depositDate: '2024-11-20' },
-];
-
 // Current User LP Position (for demo)
 export const currentUserPosition = {
   deposited: 150_000,
