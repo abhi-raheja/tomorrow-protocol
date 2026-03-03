@@ -37,7 +37,7 @@ export default function Home() {
             <div style={{
               position: 'absolute',
               inset: 0,
-              backgroundImage: `url('/images/hero-bg.png')`,
+              backgroundImage: `url('/images/hero-bg.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: 0.4,
@@ -197,7 +197,7 @@ export default function Home() {
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>X (fka Twitter)</a>
             </nav>
-            <span style={{ color: '#fff', fontSize: '16px' }}>Tomorrow Protocol &copy; 2026</span>
+            <span style={{ color: '#fff', fontSize: '16px' }}>Here and Now Digital, Inc.</span>
           </div>
 
           {/* Large logo text */}
