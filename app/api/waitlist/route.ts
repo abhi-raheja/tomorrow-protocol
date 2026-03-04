@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import { createPendingCode } from './_pending';
 
 export const runtime = 'nodejs';
 
@@ -17,7 +19,6 @@ const MAX_EMAIL_LENGTH = 254;
 const MAX_X_HANDLE_LENGTH = 15;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 10;
-const NOTION_VERSION = '2022-06-28';
 
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
@@ -34,7 +35,6 @@ function getClientKey(req: NextRequest) {
 function isRateLimited(key: string) {
   const now = Date.now();
 
-  // Best-effort cleanup for this in-memory limiter.
   for (const [entryKey, entry] of rateLimitStore) {
     if (entry.resetAt <= now) {
       rateLimitStore.delete(entryKey);
@@ -64,7 +64,6 @@ function normalizeEmail(value: unknown) {
 }
 
 function isValidEmail(email: string) {
-  // Intentionally simple: catches obvious invalid input without overfitting.
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
@@ -83,43 +82,41 @@ function normalizeXHandle(value: unknown) {
   return normalized;
 }
 
-async function createNotionWaitlistEntry(email: string, xHandle: string) {
-  const notionApiKey = process.env.NOTION_API_KEY;
-  const notionDatabaseId = process.env.NOTION_WAITLIST_DB_ID;
-
-  if (!notionApiKey || !notionDatabaseId) {
+async function sendVerificationEmail(email: string, code: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
     return { ok: false as const, reason: 'not_configured' as const };
   }
 
-  const response = await fetch('https://api.notion.com/v1/pages', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${notionApiKey}`,
-      'Content-Type': 'application/json',
-      'Notion-Version': NOTION_VERSION,
-    },
-    body: JSON.stringify({
-      parent: { database_id: notionDatabaseId },
-      properties: {
-        Email: { title: [{ text: { content: email } }] },
-        'X Handle': { rich_text: [{ text: { content: xHandle } }] },
-        'Signed Up': { date: { start: new Date().toISOString() } },
-      },
-    }),
-    signal: AbortSignal.timeout(5_000),
-  });
+  const resend = new Resend(apiKey);
 
-  if (!response.ok) {
-    const errorBody = await response.text();
-    console.error('Waitlist Notion request failed', {
-      status: response.status,
-      statusText: response.statusText,
-      error: errorBody.slice(0, 500),
+  try {
+    const { error } = await resend.emails.send({
+      from: 'Tomorrow <noreply@tomorrow.loans>',
+      to: email,
+      subject: 'Your Tomorrow verification code',
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #000; margin: 0 0 8px;">Verify your email</h2>
+          <p style="font-size: 16px; color: #666; margin: 0 0 24px; line-height: 1.5;">Enter this code to join the Tomorrow waitlist:</p>
+          <div style="background: #f5f5f5; border-radius: 12px; padding: 20px; text-align: center; margin: 0 0 24px;">
+            <span style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #000;">${code}</span>
+          </div>
+          <p style="font-size: 14px; color: #999; margin: 0; line-height: 1.5;">This code expires in 10 minutes. If you didn't request this, you can ignore this email.</p>
+        </div>
+      `,
     });
-    return { ok: false as const, reason: 'upstream_failed' as const };
-  }
 
-  return { ok: true as const };
+    if (error) {
+      console.error('Resend error', { message: error.message });
+      return { ok: false as const, reason: 'send_failed' as const };
+    }
+
+    return { ok: true as const };
+  } catch (err) {
+    console.error('Resend request failed', { error: err instanceof Error ? err.message : 'Unknown' });
+    return { ok: false as const, reason: 'send_failed' as const };
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -145,8 +142,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (typeof body.website === 'string' && body.website.trim().length > 0) {
-    // Honeypot: return success to avoid helping bots adapt.
-    return json({ success: true });
+    return json({ success: true, pendingVerification: true });
   }
 
   const email = normalizeEmail(body.email);
@@ -162,23 +158,19 @@ export async function POST(req: NextRequest) {
     return json({ error: 'X handle must be 1-15 characters (letters, numbers, underscore)' }, 400);
   }
 
-  try {
-    const notionResult = await createNotionWaitlistEntry(email, xHandle);
-
-    if (!notionResult.ok && notionResult.reason === 'not_configured') {
-      console.error('Waitlist submission rejected: Notion integration is not configured');
-      return json({ error: 'Waitlist is not configured yet. Please try again later.' }, 503);
-    }
-
-    if (!notionResult.ok) {
-      return json({ error: 'Unable to process your signup right now. Please try again later.' }, 502);
-    }
-
-    return json({ success: true });
-  } catch (error) {
-    console.error('Waitlist submission failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
-    return json({ error: 'Unable to process your signup right now. Please try again later.' }, 500);
+  const result = createPendingCode(email, xHandle);
+  if ('error' in result) {
+    return json({ error: result.error }, 429);
   }
+
+  const sendResult = await sendVerificationEmail(email, result.code);
+  if (!sendResult.ok && sendResult.reason === 'not_configured') {
+    console.error('Waitlist verification rejected: Resend is not configured');
+    return json({ error: 'Email verification is not configured yet. Please try again later.' }, 503);
+  }
+  if (!sendResult.ok) {
+    return json({ error: 'Unable to send verification email. Please try again later.' }, 502);
+  }
+
+  return json({ success: true, pendingVerification: true });
 }

@@ -7,15 +7,19 @@ interface WaitlistModalProps {
   onClose: () => void;
 }
 
+type ModalStep = 'form' | 'verify' | 'success';
+
 export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
   const [email, setEmail] = useState('');
   const [xHandle, setXHandle] = useState('');
   const [website, setWebsite] = useState('');
+  const [code, setCode] = useState('');
+  const [step, setStep] = useState<ModalStep>('form');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmitEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -40,9 +44,9 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
         }),
       });
 
-      let responseBody: { error?: string } | null = null;
+      let responseBody: { error?: string; pendingVerification?: boolean } | null = null;
       try {
-        responseBody = (await res.json()) as { error?: string };
+        responseBody = (await res.json()) as { error?: string; pendingVerification?: boolean };
       } catch {
         responseBody = null;
       }
@@ -51,7 +55,9 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
         throw new Error(responseBody?.error || 'Unable to submit right now. Please try again.');
       }
 
-      setIsSuccess(true);
+      if (responseBody?.pendingVerification) {
+        setStep('verify');
+      }
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -63,19 +69,130 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
     }
   };
 
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    const trimmedCode = code.trim();
+    if (!trimmedCode || trimmedCode.length !== 6) {
+      setError('Please enter the 6-digit code.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch('/api/waitlist/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          code: trimmedCode,
+        }),
+      });
+
+      let responseBody: { error?: string; success?: boolean } | null = null;
+      try {
+        responseBody = (await res.json()) as { error?: string; success?: boolean };
+      } catch {
+        responseBody = null;
+      }
+
+      if (!res.ok) {
+        throw new Error(responseBody?.error || 'Verification failed. Please try again.');
+      }
+
+      setStep('success');
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : 'Verification failed. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (resendCooldown) return;
+
+    setError('');
+    setResendCooldown(true);
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim(),
+          xHandle: xHandle.trim(),
+          website,
+        }),
+      });
+
+      let responseBody: { error?: string } | null = null;
+      try {
+        responseBody = (await res.json()) as { error?: string };
+      } catch {
+        responseBody = null;
+      }
+
+      if (!res.ok) {
+        throw new Error(responseBody?.error || 'Unable to resend code. Please try again.');
+      }
+
+      setCode('');
+    } catch (resendError) {
+      setError(
+        resendError instanceof Error
+          ? resendError.message
+          : 'Unable to resend code. Please try again.'
+      );
+    } finally {
+      // 30-second cooldown between resends
+      setTimeout(() => setResendCooldown(false), 30_000);
+    }
+  };
+
   const handleClose = () => {
     onClose();
-    // Reset after animation
     setTimeout(() => {
       setEmail('');
       setXHandle('');
       setWebsite('');
-      setIsSuccess(false);
+      setCode('');
+      setStep('form');
       setError('');
+      setResendCooldown(false);
     }, 200);
   };
 
   if (!open) return null;
+
+  const inputStyle = {
+    fontSize: '16px',
+    color: '#000',
+    background: '#fff',
+    border: '1px solid rgba(0,0,0,0.1)',
+    borderRadius: '12px',
+    padding: '14px 16px',
+    outline: 'none',
+    fontFamily: 'inherit',
+  } as const;
+
+  const buttonStyle = {
+    padding: '14px 16px',
+    background: '#ff5900',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '12px',
+    fontSize: '16px',
+    fontWeight: 500,
+    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+    opacity: isSubmitting ? 0.5 : 1,
+    fontFamily: 'inherit',
+  } as const;
 
   return (
     <div
@@ -129,8 +246,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
           &#x2715;
         </button>
 
-        {isSuccess ? (
-          /* Success state */
+        {step === 'success' ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center', padding: '24px 0 0' }}>
             <p style={{ fontSize: '24px', fontWeight: 600, color: '#000', letterSpacing: '-0.02em' }}>
               You&apos;re on the list
@@ -142,21 +258,94 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
               onClick={handleClose}
               style={{
                 marginTop: '8px',
-                padding: '14px 16px',
-                background: '#ff5900',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: 500,
+                ...buttonStyle,
                 cursor: 'pointer',
+                opacity: 1,
               }}
             >
               Done
             </button>
           </div>
+        ) : step === 'verify' ? (
+          <>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '32px' }}>
+              <p style={{ fontSize: '24px', fontWeight: 600, color: '#000', letterSpacing: '-0.02em' }}>
+                Check your email
+              </p>
+              <p style={{ fontSize: '16px', lineHeight: 1.5, color: 'rgba(0,0,0,0.5)' }}>
+                We sent a 6-digit code to{' '}
+                <span style={{ color: '#000', fontWeight: 500 }}>{email.trim()}</span>
+              </p>
+            </div>
+
+            <form onSubmit={handleVerifyCode} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontSize: '14px', fontWeight: 500, color: '#000' }}>
+                  Verification code
+                </label>
+                <input
+                  name="code"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="000000"
+                  value={code}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                    setCode(val);
+                  }}
+                  maxLength={6}
+                  autoFocus
+                  style={{
+                    ...inputStyle,
+                    letterSpacing: '8px',
+                    fontSize: '24px',
+                    textAlign: 'center',
+                    fontWeight: 600,
+                  }}
+                />
+              </div>
+
+              {error && (
+                <p style={{ fontSize: '14px', color: '#e53e3e', margin: '-8px 0 0' }}>{error}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={isSubmitting || code.length !== 6}
+                style={{
+                  ...buttonStyle,
+                  cursor: isSubmitting || code.length !== 6 ? 'not-allowed' : 'pointer',
+                  opacity: isSubmitting || code.length !== 6 ? 0.5 : 1,
+                }}
+              >
+                {isSubmitting ? 'Verifying...' : 'Verify'}
+              </button>
+
+              <p style={{ fontSize: '14px', color: 'rgba(0,0,0,0.5)', textAlign: 'center', margin: '-8px 0 0' }}>
+                Didn&apos;t get the code?{' '}
+                <button
+                  type="button"
+                  onClick={handleResendCode}
+                  disabled={resendCooldown}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: resendCooldown ? 'rgba(0,0,0,0.3)' : '#ff5900',
+                    cursor: resendCooldown ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    padding: 0,
+                    fontFamily: 'inherit',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  {resendCooldown ? 'Code sent' : 'Resend code'}
+                </button>
+              </p>
+            </form>
+          </>
         ) : (
-          /* Form state */
           <>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '32px' }}>
               <p style={{ fontSize: '24px', fontWeight: 600, color: '#000', letterSpacing: '-0.02em' }}>
@@ -167,7 +356,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <form onSubmit={handleSubmitEmail} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {/* Honeypot field */}
               <div
                 aria-hidden="true"
@@ -209,16 +398,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
                   maxLength={254}
                   required
                   aria-invalid={error ? 'true' : 'false'}
-                  style={{
-                    fontSize: '16px',
-                    color: '#000',
-                    background: '#fff',
-                    border: '1px solid rgba(0,0,0,0.1)',
-                    borderRadius: '12px',
-                    padding: '14px 16px',
-                    outline: 'none',
-                    fontFamily: 'inherit',
-                  }}
+                  style={inputStyle}
                 />
               </div>
 
@@ -235,16 +415,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
                   onChange={(e) => setXHandle(e.target.value)}
                   autoComplete="off"
                   maxLength={16}
-                  style={{
-                    fontSize: '16px',
-                    color: '#000',
-                    background: '#fff',
-                    border: '1px solid rgba(0,0,0,0.1)',
-                    borderRadius: '12px',
-                    padding: '14px 16px',
-                    outline: 'none',
-                    fontFamily: 'inherit',
-                  }}
+                  style={inputStyle}
                 />
               </div>
 
@@ -255,18 +426,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                style={{
-                  padding: '14px 16px',
-                  background: '#ff5900',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: 500,
-                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                  opacity: isSubmitting ? 0.5 : 1,
-                  fontFamily: 'inherit',
-                }}
+                style={buttonStyle}
               >
                 {isSubmitting ? 'Submitting...' : 'Join waitlist'}
               </button>
