@@ -197,7 +197,7 @@ export default function Home() {
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', fontSize: '16px', textDecoration: 'none' }}>X (fka Twitter)</a>
             </nav>
-            <span style={{ color: '#fff', fontSize: '16px' }}>Here and Now Digital, Inc.</span>
+            <span style={{ color: '#fff', fontSize: '16px' }}>Here &amp; Now Technologies, Inc.</span>
           </div>
 
           {/* Large logo text */}
