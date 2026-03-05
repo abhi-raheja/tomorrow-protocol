@@ -2,20 +2,6 @@
 
 Public-facing Next.js prototype for Tomorrow Protocol marketing pages and dashboard mockups.
 
-## What This Repo Contains
-
-- Marketing landing page with waitlist modal
-- LP / Borrower / Admin dashboard UI prototypes
-- Mock data only for dashboard views (`lib/dummy-data.ts`)
-- A waitlist API route that writes signups to Notion when configured
-
-## What This Repo Does Not Contain
-
-- Smart contracts
-- Wallet integrations / signing logic
-- Onchain transaction execution
-- Real portfolio or protocol data sources
-
 ## Tech Stack
 
 - Next.js (App Router)

@@ -1,0 +1,416 @@
+/* ─── Page Shell ────────────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* ─── Hero ──────────────────────────────────────────────────── */
+.hero {
+  padding: 128px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.heroTextWrap {
+  padding: 0 72px;
+}
+
+.heroText {
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #000;
+  margin: 0;
+}
+
+.heroJoinBtn {
+  font: inherit;
+  letter-spacing: -0.04em;
+  color: #ff5900;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.heroCardWrap {
+  width: 100%;
+  padding: 0 48px;
+}
+
+.heroCard {
+  width: 100%;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 48px;
+  overflow: hidden;
+  background-color: #15191e;
+}
+
+.heroCardBg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+}
+
+/* ─── Intro / Scroll Highlight ──────────────────────────────── */
+.introSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 128px 48px;
+}
+
+.introText {
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* ─── Shared Section Header ─────────────────────────────────── */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  margin-bottom: 64px;
+  border-top: 1px solid #000;
+}
+
+.sectionLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  letter-spacing: -0.04em;
+}
+
+.dots {
+  display: flex;
+  gap: 2px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  display: inline-block;
+}
+
+.dotFilled {
+  background-color: #000;
+  border-color: #000;
+}
+
+/* ─── Design / How It Works ─────────────────────────────────── */
+.designSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 128px 48px;
+}
+
+.designLayout {
+  display: flex;
+  gap: 96px;
+}
+
+.designLeft {
+  flex: 2;
+  position: sticky;
+  top: 128px;
+  align-self: flex-start;
+}
+
+.designLeftText {
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #000;
+  margin: 0;
+}
+
+.accent {
+  color: #ff5900;
+}
+
+.designRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+  padding-top: 50vh;
+}
+
+.featureTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin: 0 0 4px;
+}
+
+.featureDesc {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ─── Stack / Trust Cards ───────────────────────────────────── */
+.stackSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 128px 48px;
+}
+
+.stackInner {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.stackHeading {
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #000;
+  margin: 0;
+  width: 60%;
+}
+
+.stackGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ─── For / Target Audience ─────────────────────────────────── */
+.forSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 128px 48px 256px;
+}
+
+.forText {
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.forHighlight {
+  color: #000;
+}
+
+.forJoinBtn {
+  font: inherit;
+  letter-spacing: -0.04em;
+  color: #ff5900;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ─── Footer ────────────────────────────────────────────────── */
+.footer {
+  background-color: #ff5900;
+  display: flex;
+  flex-direction: column;
+}
+
+.footerContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+}
+
+.footerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footerLink {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.footerLink:hover {
+  opacity: 0.8;
+}
+
+.footerCompany {
+  color: #fff;
+  font-size: 16px;
+}
+
+.footerLogoText {
+  font-size: clamp(48px, 12vw, 160px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ─── Responsive: Laptop / Tablet (max 1024px) ──────────────── */
+@media (max-width: 1024px) {
+  .heroTextWrap {
+    padding: 0 40px;
+  }
+
+  .heroCardWrap {
+    padding: 0 24px;
+  }
+
+  .heroCard {
+    border-radius: 32px;
+  }
+
+  .introSection {
+    padding: 96px 40px;
+  }
+
+  .introText {
+    font-size: 52px;
+  }
+
+  .designSection {
+    padding: 96px 40px;
+  }
+
+  .designLayout {
+    gap: 48px;
+  }
+
+  .designLeftText {
+    font-size: 36px;
+  }
+
+  .stackSection {
+    padding: 96px 40px;
+  }
+
+  .stackGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stackHeading {
+    width: 100%;
+    font-size: 36px;
+  }
+
+  .forSection {
+    padding: 96px 40px 160px;
+  }
+
+  .forText {
+    font-size: 36px;
+  }
+}
+
+/* ─── Responsive: Mobile (max 768px) ────────────────────────── */
+@media (max-width: 768px) {
+  .hero {
+    padding: 96px 0 0;
+    gap: 32px;
+  }
+
+  .heroTextWrap {
+    padding: 0 20px;
+  }
+
+  .heroText {
+    font-size: 22px;
+  }
+
+  .heroCardWrap {
+    padding: 0 16px;
+  }
+
+  .heroCard {
+    border-radius: 20px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .introSection {
+    padding: 64px 20px;
+  }
+
+  .introText {
+    font-size: 30px;
+  }
+
+  .designSection {
+    padding: 64px 20px;
+  }
+
+  .sectionHeader {
+    margin-bottom: 40px;
+  }
+
+  .designLayout {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .designLeft {
+    position: static;
+    flex: unset;
+  }
+
+  .designLeftText {
+    font-size: 26px;
+  }
+
+  .designRight {
+    flex: unset;
+    padding-top: 0;
+    gap: 48px;
+  }
+
+  .stackSection {
+    padding: 64px 20px;
+  }
+
+  .stackGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stackHeading {
+    font-size: 26px;
+    width: 100%;
+  }
+
+  .forSection {
+    padding: 64px 20px 96px;
+  }
+
+  .forText {
+    font-size: 22px;
+  }
+
+  .footerContent {
+    gap: 64px;
+  }
+
+  .footerTop {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
