@@ -1,0 +1,59 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+  padding: 0 24px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, border-bottom 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerScrolled {
+  background: rgba(245, 245, 245, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.joinBtn {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  padding: 6px 16px;
+  border: 1px solid #000;
+  border-radius: 100px;
+  background: #000;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s ease;
+}
+
+.joinBtn:hover {
+  opacity: 0.8;
+}
+
+/* Mobile: slightly smaller header padding */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+}

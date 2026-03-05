@@ -5,9 +5,10 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 interface ScrollHighlightTextProps {
   text: string;
   style?: React.CSSProperties;
+  className?: string;
 }
 
-export function ScrollHighlightText({ text, style }: ScrollHighlightTextProps) {
+export function ScrollHighlightText({ text, style, className }: ScrollHighlightTextProps) {
   const containerRef = useRef<HTMLParagraphElement>(null);
   const [progress, setProgress] = useState(0);
 
@@ -36,7 +37,7 @@ export function ScrollHighlightText({ text, style }: ScrollHighlightTextProps) {
   const words = text.split(' ');
 
   return (
-    <p ref={containerRef} style={style}>
+    <p ref={containerRef} style={style} className={className}>
       {words.map((word, i) => {
         // Each word has a start point and a transition window.
         // transitionWidth controls how much scroll each word takes to go dim→bright.
