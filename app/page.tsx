@@ -158,7 +158,7 @@ export default function Home() {
                 X (fka Twitter)
               </a>
             </nav>
-            <span className={styles.footerCompany}>Here &amp; Now Technologies, Inc.</span>
+            <span className={styles.footerCompany}>© {new Date().getFullYear()} Here &amp; Now Technologies, Inc.</span>
           </div>
 
           <p className={styles.footerLogoText}>TOMORROW</p>
