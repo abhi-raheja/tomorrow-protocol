@@ -2,6 +2,7 @@
 .page {
   min-height: 100vh;
   background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* ─── Hero ──────────────────────────────────────────────────── */
@@ -142,7 +143,7 @@
   display: flex;
   flex-direction: column;
   gap: 96px;
-  padding-top: 50vh;
+  padding-top: 30vh;
 }
 
 .featureTitle {
@@ -271,11 +272,11 @@
 /* ─── Responsive: Laptop / Tablet (max 1024px) ──────────────── */
 @media (max-width: 1024px) {
   .heroTextWrap {
-    padding: 0 40px;
+    padding: 64px 24px;
   }
 
   .heroCardWrap {
-    padding: 0 24px;
+    padding: 0px 16px;
   }
 
   .heroCard {
@@ -332,15 +333,15 @@
   }
 
   .heroTextWrap {
-    padding: 0 20px;
+    padding: 64px 24px;
   }
 
   .heroText {
-    font-size: 22px;
+    font-size: 28px;
   }
 
   .heroCardWrap {
-    padding: 0 16px;
+    padding: 0px 16px;
   }
 
   .heroCard {
@@ -349,15 +350,15 @@
   }
 
   .introSection {
-    padding: 64px 20px;
+    padding: 96px 32px;
   }
 
   .introText {
-    font-size: 30px;
+    font-size: 40px;
   }
 
   .designSection {
-    padding: 64px 20px;
+    padding: 96px 32px;
   }
 
   .sectionHeader {
@@ -375,7 +376,7 @@
   }
 
   .designLeftText {
-    font-size: 26px;
+    font-size: 32px;
   }
 
   .designRight {
@@ -385,24 +386,48 @@
   }
 
   .stackSection {
-    padding: 64px 20px;
+    padding: 96px 0;
+  }
+
+  .stackHeader {
+    padding: 0 32px;
   }
 
   .stackGrid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 0 32px 0 32px;
+    scroll-padding-left: 32px;
+    grid-template-columns: unset;
+  }
+
+  .stackGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stackGrid > * {
+    flex: 0 0 80vw;
+    max-width: 300px;
+    scroll-snap-align: start;
   }
 
   .stackHeading {
-    font-size: 26px;
+    font-size: 32px;
     width: 100%;
   }
 
   .forSection {
-    padding: 64px 20px 96px;
+    padding: 96px 32px 192px;
   }
 
   .forText {
-    font-size: 22px;
+    font-size: 32px;
   }
 
   .footerContent {

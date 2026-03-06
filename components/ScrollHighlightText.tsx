@@ -39,11 +39,11 @@ export function ScrollHighlightText({ text, style, className }: ScrollHighlightT
   return (
     <p ref={containerRef} style={style} className={className}>
       {words.map((word, i) => {
-        // Each word has a start point and a transition window.
-        // transitionWidth controls how much scroll each word takes to go dim→bright.
-        const transitionWidth = 0.4;
-        const wordStart = (i / words.length) * (1 - transitionWidth);
-        // At progress=1, last word: wordStart ≈ 0.57, so 0.57+0.4 = 0.97 → fully bright
+        // Each word's highlight window starts exactly at its position in the sequence.
+        // transitionWidth is narrow (1.5 word-slots) so the lit "wave" moves
+        // sharply through the text word-by-word as the user scrolls.
+        const transitionWidth = 1.5 / words.length;
+        const wordStart = i / words.length;
         const wordAlpha = (progress - wordStart) / transitionWidth;
         const opacity = Math.max(0.15, Math.min(1, wordAlpha));
 
@@ -52,7 +52,7 @@ export function ScrollHighlightText({ text, style, className }: ScrollHighlightT
             key={i}
             style={{
               color: `rgba(0,0,0,${opacity})`,
-              transition: 'color 0.1s ease-out',
+              transition: 'color 0.08s linear',
             }}
           >
             {word}{i < words.length - 1 ? ' ' : ''}

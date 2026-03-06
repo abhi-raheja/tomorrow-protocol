@@ -84,7 +84,7 @@ export default function Home() {
       {/* Trust / Stack Cards */}
       <section className={styles.stackSection}>
         <div className={styles.stackInner}>
-          <div>
+          <div className={styles.stackHeader}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionLabel}>Trust</span>
               <div className={styles.dots}>
