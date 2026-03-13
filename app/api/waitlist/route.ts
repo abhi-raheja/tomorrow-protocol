@@ -34,10 +34,10 @@ function getClientKey(req: NextRequest) {
 const ratelimit =
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
     ? new Ratelimit({
-        redis: Redis.fromEnv(),
-        limiter: Ratelimit.fixedWindow(10, '60 s'),
-        prefix: 'waitlist:rl',
-      })
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.fixedWindow(10, '60 s'),
+      prefix: 'waitlist:rl',
+    })
     : null;
 
 async function isRateLimited(key: string): Promise<boolean> {
@@ -132,16 +132,54 @@ async function sendVerificationEmail(email: string, code: string) {
       from: 'Tomorrow <noreply@tomorrow.loans>',
       to: email,
       subject: 'Your Tomorrow verification code',
-      html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px;">
-          <h2 style="font-size: 20px; font-weight: 600; color: #000; margin: 0 0 8px;">Verify your email</h2>
-          <p style="font-size: 16px; color: #666; margin: 0 0 24px; line-height: 1.5;">Enter this code to join the Tomorrow waitlist:</p>
-          <div style="background: #f5f5f5; border-radius: 12px; padding: 20px; text-align: center; margin: 0 0 24px;">
-            <span style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #000;">${code}</span>
-          </div>
-          <p style="font-size: 14px; color: #999; margin: 0; line-height: 1.5;">This code expires in 10 minutes. If you didn't request this, you can ignore this email.</p>
-        </div>
-      `,
+      html: `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your Tomorrow verification code</title></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:48px 16px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:#ff5900;padding:32px 40px;">
+            <p style="margin:0;font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">Tomorrow</p>
+            <p style="margin:4px 0 0;font-size:13px;color:rgba(255,255,255,0.75);letter-spacing:0.01em;">tomorrow.loans</p>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:40px 40px 32px;">
+            <p style="margin:0 0 6px;font-size:22px;font-weight:700;color:#000;letter-spacing:-0.02em;">Verify your email</p>
+            <p style="margin:0 0 32px;font-size:15px;color:#666;line-height:1.6;">Use the code below to complete your Tomorrow waitlist signup. It expires in <strong style="color:#000;">10 minutes</strong>.</p>
+
+            <!-- Code box -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="background:#f9f9f9;border:1px solid #ebebeb;border-radius:14px;padding:28px 20px;">
+                  <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:#999;letter-spacing:0.08em;text-transform:uppercase;">Your code</p>
+                  <p style="margin:0;font-size:42px;font-weight:800;color:#000;letter-spacing:12px;font-variant-numeric:tabular-nums;">${code}</p>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:28px 0 0;font-size:13px;color:#aaa;line-height:1.6;">If you didn&rsquo;t request this, you can safely ignore this email.</p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:20px 40px 32px;border-top:1px solid #f0f0f0;">
+            <p style="margin:0;font-size:12px;color:#bbb;line-height:1.6;">&copy; ${new Date().getFullYear()} Here &amp; Now Technologies, Inc. &mdash; All rights reserved.</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
     });
 
     if (error) {
