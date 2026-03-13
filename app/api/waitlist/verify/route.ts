@@ -19,6 +19,26 @@ function json(body: Record<string, unknown>, status = 200) {
   return NextResponse.json(body, { status, headers: JSON_HEADERS });
 }
 
+async function emailExistsInNotion(email: string, notionApiKey: string, notionDatabaseId: string): Promise<boolean> {
+  const response = await fetch(`https://api.notion.com/v1/databases/${notionDatabaseId}/query`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${notionApiKey}`,
+      'Content-Type': 'application/json',
+      'Notion-Version': NOTION_VERSION,
+    },
+    body: JSON.stringify({
+      filter: { property: 'Email', title: { equals: email } },
+      page_size: 1,
+    }),
+    signal: AbortSignal.timeout(5_000),
+  });
+
+  if (!response.ok) return false;
+  const data = (await response.json()) as { results: unknown[] };
+  return data.results.length > 0;
+}
+
 async function createNotionWaitlistEntry(email: string, xHandle: string) {
   const notionApiKey = process.env.NOTION_API_KEY;
   const notionDatabaseId = process.env.NOTION_WAITLIST_DB_ID;
@@ -90,13 +110,30 @@ export async function POST(req: NextRequest) {
     return json({ error: 'Code must be 6 digits' }, 400);
   }
 
-  const result = verifyCode(email, code);
+  let result: Awaited<ReturnType<typeof verifyCode>>;
+  try {
+    result = await verifyCode(email, code);
+  } catch (err) {
+    console.error('verifyCode failed', { error: err instanceof Error ? err.message : 'Unknown' });
+    return json({ error: 'Unable to process your request. Please try again later.' }, 503);
+  }
+
   if ('error' in result) {
     return json({ error: result.error }, result.status);
   }
 
   // Code verified — write to Notion
   try {
+    const notionApiKey = process.env.NOTION_API_KEY;
+    const notionDatabaseId = process.env.NOTION_WAITLIST_DB_ID;
+
+    if (notionApiKey && notionDatabaseId) {
+      const alreadyExists = await emailExistsInNotion(email, notionApiKey, notionDatabaseId);
+      if (alreadyExists) {
+        return json({ success: true });
+      }
+    }
+
     const notionResult = await createNotionWaitlistEntry(email, result.xHandle);
 
     if (!notionResult.ok && notionResult.reason === 'not_configured') {

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { Redis } from '@upstash/redis';
+import { Ratelimit } from '@upstash/ratelimit';
 import { createPendingCode } from './_pending';
 
 export const runtime = 'nodejs';
@@ -8,6 +10,7 @@ type WaitlistRequestBody = {
   email?: unknown;
   xHandle?: unknown;
   website?: unknown; // honeypot
+  turnstileToken?: unknown;
 };
 
 const JSON_HEADERS = {
@@ -17,10 +20,6 @@ const JSON_HEADERS = {
 const MAX_BODY_BYTES = 4_096;
 const MAX_EMAIL_LENGTH = 254;
 const MAX_X_HANDLE_LENGTH = 15;
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX_REQUESTS = 10;
-
-const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
 function json(body: Record<string, unknown>, status = 200) {
   return NextResponse.json(body, { status, headers: JSON_HEADERS });
@@ -32,27 +31,38 @@ function getClientKey(req: NextRequest) {
   return (forwardedFor?.split(',')[0]?.trim() || realIp || 'unknown').slice(0, 128);
 }
 
-function isRateLimited(key: string) {
-  const now = Date.now();
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.fixedWindow(10, '60 s'),
+        prefix: 'waitlist:rl',
+      })
+    : null;
 
-  for (const [entryKey, entry] of rateLimitStore) {
-    if (entry.resetAt <= now) {
-      rateLimitStore.delete(entryKey);
-    }
-  }
+async function isRateLimited(key: string): Promise<boolean> {
+  if (!ratelimit) return false;
+  const { success } = await ratelimit.limit(key);
+  return !success;
+}
 
-  const existing = rateLimitStore.get(key);
-  if (!existing || existing.resetAt <= now) {
-    rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true; // not configured, skip (local dev)
+
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret, response: token, remoteip: ip }),
+      signal: AbortSignal.timeout(5_000),
+    });
+    if (!res.ok) return false;
+    const data = (await res.json()) as { success: boolean };
+    return data.success;
+  } catch {
     return false;
   }
-
-  if (existing.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return true;
-  }
-
-  existing.count += 1;
-  return false;
 }
 
 function normalizeEmail(value: unknown) {
@@ -80,6 +90,33 @@ function normalizeXHandle(value: unknown) {
   if (!/^[A-Za-z0-9_]+$/.test(normalized)) return null;
 
   return normalized;
+}
+
+async function isAlreadyOnWaitlist(email: string): Promise<boolean> {
+  const notionApiKey = process.env.NOTION_API_KEY;
+  const notionDatabaseId = process.env.NOTION_WAITLIST_DB_ID;
+  if (!notionApiKey || !notionDatabaseId) return false;
+
+  try {
+    const res = await fetch(`https://api.notion.com/v1/databases/${notionDatabaseId}/query`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${notionApiKey}`,
+        'Content-Type': 'application/json',
+        'Notion-Version': '2022-06-28',
+      },
+      body: JSON.stringify({
+        filter: { property: 'Email', title: { equals: email } },
+        page_size: 1,
+      }),
+      signal: AbortSignal.timeout(5_000),
+    });
+    if (!res.ok) return false;
+    const data = (await res.json()) as { results: unknown[] };
+    return data.results.length > 0;
+  } catch {
+    return false;
+  }
 }
 
 async function sendVerificationEmail(email: string, code: string) {
@@ -130,7 +167,9 @@ export async function POST(req: NextRequest) {
     return json({ error: 'Content-Type must be application/json' }, 415);
   }
 
-  if (isRateLimited(getClientKey(req))) {
+  const clientIp = getClientKey(req);
+
+  if (await isRateLimited(clientIp)) {
     return json({ error: 'Too many requests. Please try again shortly.' }, 429);
   }
 
@@ -143,6 +182,18 @@ export async function POST(req: NextRequest) {
 
   if (typeof body.website === 'string' && body.website.trim().length > 0) {
     return json({ success: true, pendingVerification: true });
+  }
+
+  // Turnstile verification (required when configured)
+  if (process.env.TURNSTILE_SECRET_KEY) {
+    const token = typeof body.turnstileToken === 'string' ? body.turnstileToken : '';
+    if (!token) {
+      return json({ error: 'Bot verification required.' }, 400);
+    }
+    const valid = await verifyTurnstile(token, clientIp);
+    if (!valid) {
+      return json({ error: 'Bot verification failed. Please try again.' }, 400);
+    }
   }
 
   const email = normalizeEmail(body.email);
@@ -158,7 +209,18 @@ export async function POST(req: NextRequest) {
     return json({ error: 'X handle must be 1-15 characters (letters, numbers, underscore)' }, 400);
   }
 
-  const result = createPendingCode(email, xHandle);
+  if (await isAlreadyOnWaitlist(email)) {
+    return json({ success: true, pendingVerification: false });
+  }
+
+  let result: { code: string } | { error: string };
+  try {
+    result = await createPendingCode(email, xHandle);
+  } catch (err) {
+    console.error('createPendingCode failed', { error: err instanceof Error ? err.message : 'Unknown' });
+    return json({ error: 'Unable to process your request. Please try again later.' }, 503);
+  }
+
   if ('error' in result) {
     return json({ error: result.error }, 429);
   }
