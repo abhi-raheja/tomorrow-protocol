@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 interface WaitlistModalProps {
   open: boolean;
@@ -18,6 +19,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [resendCooldown, setResendCooldown] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const handleSubmitEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +43,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
           email: normalizedEmail,
           xHandle: normalizedXHandle,
           website,
+          turnstileToken,
         }),
       });
 
@@ -55,7 +58,9 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
         throw new Error(responseBody?.error || 'Unable to submit right now. Please try again.');
       }
 
-      if (responseBody?.pendingVerification) {
+      if (responseBody?.pendingVerification === false) {
+        setStep('success');
+      } else if (responseBody?.pendingVerification) {
         setStep('verify');
       }
     } catch (submitError) {
@@ -128,6 +133,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
           email: email.trim(),
           xHandle: xHandle.trim(),
           website,
+          turnstileToken,
         }),
       });
 
@@ -165,6 +171,7 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
       setStep('form');
       setError('');
       setResendCooldown(false);
+      setTurnstileToken('');
     }, 200);
   };
 
@@ -322,6 +329,16 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
                 {isSubmitting ? 'Verifying...' : 'Verify'}
               </button>
 
+              {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+                <Turnstile
+                  siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                  onSuccess={(token) => setTurnstileToken(token)}
+                  onError={() => setTurnstileToken('')}
+                  onExpire={() => setTurnstileToken('')}
+                  options={{ size: 'invisible' }}
+                />
+              )}
+
               <p style={{ fontSize: '14px', color: 'rgba(0,0,0,0.5)', textAlign: 'center', margin: '-8px 0 0' }}>
                 Didn&apos;t get the code?{' '}
                 <button
@@ -423,10 +440,24 @@ export function WaitlistModal({ open, onClose }: WaitlistModalProps) {
                 <p style={{ fontSize: '14px', color: '#e53e3e', margin: '-8px 0 0' }}>{error}</p>
               )}
 
+              {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+                <Turnstile
+                  siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                  onSuccess={(token) => setTurnstileToken(token)}
+                  onError={() => setTurnstileToken('')}
+                  onExpire={() => setTurnstileToken('')}
+                  options={{ theme: 'light' }}
+                />
+              )}
+
               <button
                 type="submit"
-                disabled={isSubmitting}
-                style={buttonStyle}
+                disabled={isSubmitting || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
+                style={{
+                  ...buttonStyle,
+                  cursor: isSubmitting || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) ? 'not-allowed' : 'pointer',
+                  opacity: isSubmitting || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) ? 0.5 : 1,
+                }}
               >
                 {isSubmitting ? 'Submitting...' : 'Join waitlist'}
               </button>
