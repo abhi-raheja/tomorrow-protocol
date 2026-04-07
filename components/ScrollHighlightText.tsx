@@ -51,7 +51,7 @@ export function ScrollHighlightText({ text, style, className }: ScrollHighlightT
           <span
             key={i}
             style={{
-              color: `rgba(0,0,0,${opacity})`,
+              color: `rgba(255,255,255,${opacity})`,
               transition: 'color 0.08s linear',
             }}
           >

@@ -22,14 +22,10 @@ export function Header() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
       <Link href="/" className={styles.logo}>
-        <Image src="/icons/tomorrow-logo.svg" alt="Tomorrow" width={28} height={23} />
+        <Image src="/icons/tomorrow-logo-white.svg" alt="Tomorrow" width={34} height={28} />
+        <span className={styles.logoText}>Tomorrow</span>
       </Link>
 
-      <div className={styles.actions}>
-        <button onClick={open} className={styles.joinBtn}>
-          Join Waitlist
-        </button>
-      </div>
     </header>
   );
 }

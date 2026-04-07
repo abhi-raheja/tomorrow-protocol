@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { ScrollHighlightText } from '@/components/ScrollHighlightText';
-import { StackCard } from '@/components/StackCard';
 import { WaitlistButton } from '@/components/WaitlistButton';
 import styles from './page.module.css';
 
@@ -29,16 +28,53 @@ const howItWorksSteps = [
   },
 ];
 
+const trustCards = [
+  {
+    icon: '/icons/shield.svg',
+    title: 'Professional Risk Management',
+    description:
+      'We work with specialized originators and underwriters with a multi-year track record and deep relationships within the creator economy.',
+  },
+  {
+    icon: '/icons/clock.svg',
+    title: 'Average Loan Duration',
+    description:
+      'Creator loans range from 3-12 month contracts with strong protection rights and predictable repayment schedules.',
+  },
+  {
+    icon: '/icons/chart.svg',
+    title: 'First-Loss Buffer',
+    description:
+      'Originators and underwriters put skin in the game by providing first-loss capital before LP capital is touched when defaults occur.',
+  },
+  {
+    icon: '/icons/lock.svg',
+    title: 'Default Rate',
+    description:
+      'Historically very low default rates. Audited smart contracts and institutional-grade custody.',
+  },
+];
+
 export default function Home() {
   const [hiwVisible, setHiwVisible] = useState(false);
+  const [trustVisible, setTrustVisible] = useState(false);
   const hiwRef = useRef<HTMLDivElement>(null);
+  const trustRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setHiwVisible(true); },
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === hiwRef.current) setHiwVisible(true);
+            if (entry.target === trustRef.current) setTrustVisible(true);
+          }
+        });
+      },
       { threshold: 0.1 }
     );
     if (hiwRef.current) observer.observe(hiwRef.current);
+    if (trustRef.current) observer.observe(trustRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -46,153 +82,132 @@ export default function Home() {
     <div className={styles.page}>
       <Header />
 
-      {/* Hero */}
+      {/* ─── Hero ─── */}
       <section className={styles.hero}>
-        <div className={styles.heroTextWrap}>
-          <p className={styles.heroText}>
-            Secured stablecoin lending for the creator economy.
-            <br />
-            <WaitlistButton className={styles.heroJoinBtn}>
-              Join waitlist →
-            </WaitlistButton>
-          </p>
+        <div className={styles.heroBg}>
+          <div className={styles.heroBgImage} />
+          <div className={styles.heroBgOverlay} />
         </div>
 
-        <div className={styles.heroCardWrap}>
-          <div className={styles.heroCard}>
-            <div className={styles.heroCardBg} />
+        <div className={styles.heroContent}>
+          <p className={styles.scrollHint}>/ Scroll down</p>
+
+          <div className={styles.heroTextBlock}>
+            <h1 className={styles.heroHeadline}>
+              Secured Stablecoin Lending<br />
+              for the Creator Economy.
+            </h1>
+
+            <div className={styles.heroActions}>
+              <span className={styles.heroComingSoon}>Coming Q2 2026</span>
+            </div>
           </div>
+
         </div>
       </section>
 
-      {/* Intro — scroll-revealed text */}
-      <section className={styles.introSection}>
-        <ScrollHighlightText
-          text="Tomorrow issues digital creators onchain credit facilities secured against Google Adsense revenue, enabling access to affordable credit without selling content catalogues."
-          className={styles.introText}
-        />
+      {/* ─── About / What ─── */}
+      <section className={styles.aboutSection} id="about">
+        <div className={styles.aboutInner}>
+          <h5 className={styles.sectionLabel}>WHAT</h5>
+          <div className={styles.aboutDivider} />
+          <ScrollHighlightText
+            text="Tomorrow issues digital creators onchain credit facilities secured against Google Adsense revenue, enabling access to affordable credit without selling content catalogues."
+            className={styles.aboutHeadline}
+          />
+        </div>
       </section>
 
-      {/* How It Works */}
-      <section className={styles.hiwSection} ref={hiwRef}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>How it works</span>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotFilled}`} />
-            <span className={styles.dot} />
-            <span className={styles.dot} />
-          </div>
-        </div>
-
-        <div className={styles.hiwLayout}>
-          {/* Left column */}
+      {/* ─── How It Works ─── */}
+      <section className={styles.hiwSection} id="how-it-works" ref={hiwRef}>
+        <div className={styles.hiwInner}>
           <div className={styles.hiwLeft}>
-            <p className={styles.hiwHeadline}>
+            <h5 className={styles.sectionLabel}>HOW IT WORKS</h5>
+            <h2 className={styles.hiwHeadline}>
               Creator economy is systemically underserved by tradfi.{' '}
-              <span className={styles.accent}>Tomorrow fills the gap.</span>
-            </p>
+              <span className={styles.accentOrange}>Tomorrow fills the gap.</span>
+            </h2>
           </div>
 
-          {/* Right column */}
           <div className={styles.hiwRight}>
-            {howItWorksSteps.map((step, i) => (
-              <div
-                key={step.number}
-                className={`${styles.hiwCard} ${hiwVisible ? styles.hiwCardVisible : ''}`}
-                style={{ transitionDelay: `${i * 110}ms` }}
-              >
-                <div className={styles.hiwCardTop}>
-                  <p className={styles.hiwCardTitle}>{step.title}</p>
+            <div className={styles.hiwCards}>
+              {howItWorksSteps.map((step, i) => (
+                <div
+                  key={step.number}
+                  className={`${styles.hiwCard} ${hiwVisible ? styles.hiwCardVisible : ''}`}
+                  style={{ transitionDelay: `${i * 120}ms` }}
+                >
+                  <h3 className={styles.hiwCardTitle}>{step.title}</h3>
+                  <p className={styles.hiwCardDesc}>{step.description}</p>
                 </div>
-                <div className={styles.hiwCardRule} />
-                <p className={styles.hiwCardDesc}>{step.description}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Trust / Stack Cards ─── */}
+      <section className={styles.trustSection} id="trust" ref={trustRef}>
+        <div className={styles.trustInner}>
+          <div className={styles.trustHeader}>
+            <h5 className={styles.sectionLabel}>TRUST</h5>
+            <h2 className={styles.trustHeadline}>
+              Built for institutional capital
+            </h2>
+          </div>
+
+          <div className={styles.trustGrid}>
+            {trustCards.map((card, i) => (
+              <div
+                key={card.title}
+                className={`${styles.trustCard} ${trustVisible ? styles.trustCardVisible : ''}`}
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                <div className={styles.trustCardIcon}>
+                  <Image src={card.icon} alt="" width={24} height={24} />
+                </div>
+                <h3 className={styles.trustCardTitle}>{card.title}</h3>
+                <p className={styles.trustCardDesc}>{card.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Trust / Stack Cards */}
-      <section className={styles.stackSection}>
-        <div className={styles.stackInner}>
-          <div className={styles.stackHeader}>
-            <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>Trust</span>
-              <div className={styles.dots}>
-                <span className={`${styles.dot} ${styles.dotFilled}`} />
-                <span className={`${styles.dot} ${styles.dotFilled}`} />
-                <span className={styles.dot} />
-              </div>
-            </div>
-            <p className={styles.stackHeading}>Built for institutional capital</p>
-          </div>
-
-          <div className={styles.stackGrid}>
-            <StackCard
-              icon={<Image src="/icons/shield.svg" alt="" width={24} height={24} />}
-              title="Professional Risk Management"
-              description="We work with specialized originators and underwriters with a multi-year track record and deep relationships within the creator economy."
-            />
-            <StackCard
-              icon={<Image src="/icons/clock.svg" alt="" width={24} height={24} />}
-              title="Average Loan Duration"
-              description="Creator loans range from 3-12 month contracts with strong protection rights and predictable repayment schedules."
-            />
-            <StackCard
-              icon={<Image src="/icons/chart.svg" alt="" width={24} height={24} />}
-              title="First-Loss Buffer"
-              description="Originators and underwriters put skin in the game by providing first-loss capital before LP capital is touched when defaults occur."
-            />
-            <StackCard
-              icon={<Image src="/icons/lock.svg" alt="" width={24} height={24} />}
-              title="Default Rate"
-              description={<>Historical default rate under 1%. Audited smart contracts and institutional-grade custody.</>}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* For / Target Audience */}
+      {/* ─── For / Target Audience ─── */}
       <section className={styles.forSection}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>For</span>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotFilled}`} />
-            <span className={`${styles.dot} ${styles.dotFilled}`} />
-            <span className={`${styles.dot} ${styles.dotFilled}`} />
-          </div>
+        <div className={styles.forInner}>
+          <h5 className={styles.sectionLabel}>FOR</h5>
+          <div className={styles.forDivider} />
+          <p className={styles.forText}>
+            Tomorrow is built for <span className={styles.forHighlight}>DeFi protocols</span> seeking real-world yield, <span className={styles.forHighlight}>institutional investors</span> diversifying exposure to the creator economy, <span className={styles.forHighlight}>credit underwriters and originators</span> looking to lower their cost of capital, and <span className={styles.forHighlight}>digital creators</span> requiring capital without selling their catalogues.
+          </p>
         </div>
-
-        <p className={styles.forText}>
-          Tomorrow is built for{' '}
-          <span className={styles.forHighlight}>DeFi protocols</span> seeking real-world yield,{' '}
-          <span className={styles.forHighlight}>institutional investors</span> diversifying exposure to the creator economy,{' '}
-          <span className={styles.forHighlight}>credit underwriters and originators</span> looking to lower their cost of capital, and{' '}
-          <span className={styles.forHighlight}>digital creators</span> requiring capital without selling their catalogues.{' '}
-          <WaitlistButton className={styles.forJoinBtn}>
-            Join waitlist →
-          </WaitlistButton>
-        </p>
       </section>
 
-      {/* Footer */}
+      {/* ─── Footer ─── */}
       <footer className={styles.footer}>
-        <span className={styles.footerBgText}>Tomorrow</span>
-        <div className={styles.footerContent}>
-          <div className={styles.footerTop}>
+        <div className={styles.footerTop}>
+          <div className={styles.footerLeft}>
             <div className={styles.footerBrand}>
-              <div className={styles.footerBrandRow}>
-                <Image src="/icons/tomorrow-logo-white.svg" alt="Tomorrow" width={32} height={32} />
-              </div>
+              <Image src="/icons/tomorrow-logo-white.svg" alt="Tomorrow" width={34} height={28} />
+              <span className={styles.footerBrandName}>Tomorrow</span>
             </div>
+          </div>
+
+          <div className={styles.footerRight}>
+            <p className={styles.footerNavLabel}>Connect</p>
             <nav className={styles.footerNav}>
-              <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>X/Twitter</a>
+              <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>X / Twitter</a>
               <a href="https://www.linkedin.com/company/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>LinkedIn</a>
             </nav>
           </div>
-          <div className={styles.footerBottom}>
-            <span className={styles.footerCompany}>© {new Date().getFullYear()} Here &amp; Now Technologies, Inc.</span>
-          </div>
+        </div>
+
+        <div className={styles.footerBottom}>
+          <span className={styles.footerCopyright}>
+            &copy; {new Date().getFullYear()} Here &amp; Now Technologies, Inc. All rights reserved.
+          </span>
         </div>
       </footer>
     </div>
