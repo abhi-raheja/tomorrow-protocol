@@ -170,22 +170,22 @@ export default function Home() {
 
       {/* Footer */}
       <footer className={styles.footer}>
+        <span className={styles.footerBgText}>Tomorrow</span>
         <div className={styles.footerContent}>
           <div className={styles.footerTop}>
+            <div className={styles.footerBrand}>
+              <div className={styles.footerBrandRow}>
+                <Image src="/icons/tomorrow-logo-white.svg" alt="Tomorrow" width={32} height={32} />
+              </div>
+            </div>
             <nav className={styles.footerNav}>
-              <a
-                href="https://x.com/tomorrowloans"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.footerLink}
-              >
-                X (fka Twitter)
-              </a>
+              <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>X/Twitter</a>
+              <a href="https://www.linkedin.com/company/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>LinkedIn</a>
             </nav>
+          </div>
+          <div className={styles.footerBottom}>
             <span className={styles.footerCompany}>© {new Date().getFullYear()} Here &amp; Now Technologies, Inc.</span>
           </div>
-
-          <p className={styles.footerLogoText}>TOMORROW</p>
         </div>
       </footer>
     </div>

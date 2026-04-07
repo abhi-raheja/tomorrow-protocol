@@ -1,7 +1,7 @@
 /* ─── Page Shell ────────────────────────────────────────────── */
 .page {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #FDFBF8;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -11,10 +11,49 @@
   display: flex;
   flex-direction: column;
   gap: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top-right orange glow orb */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 89, 0, 0.07), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+  animation: heroFloat 18s ease-in-out infinite;
+}
+
+/* Bottom-left orange glow orb */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0%;
+  left: -10%;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 140, 60, 0.08), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+  animation: heroFloat 22s ease-in-out infinite reverse;
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 20px) scale(1.04); }
 }
 
 .heroTextWrap {
   padding: 0 72px;
+  position: relative;
+  z-index: 1;
 }
 
 .heroText {
@@ -39,6 +78,8 @@
 .heroCardWrap {
   width: 100%;
   padding: 0 48px;
+  position: relative;
+  z-index: 1;
 }
 
 .heroCard {
@@ -252,16 +293,37 @@
 
 /* ─── Footer ────────────────────────────────────────────────── */
 .footer {
-  background-color: #ff5900;
-  display: flex;
-  flex-direction: column;
+  background: #ff5900;
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.footerBgText {
+  position: absolute;
+  bottom: -0.15em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(80px, 18vw, 220px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  opacity: 0.08;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 1;
 }
 
 .footerContent {
-  padding: 24px;
+  width: 100%;
+  padding: 32px 48px 28px;
   display: flex;
   flex-direction: column;
-  gap: 128px;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
 }
 
 .footerTop {
@@ -270,25 +332,59 @@
   align-items: flex-start;
 }
 
+.footerBrand {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footerBrandRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footerBrandName {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.footerTagline {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0;
+}
+
 .footerNav {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 .footerLink {
-  color: #fff;
-  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 .footerLink:hover {
-  opacity: 0.8;
+  color: #ffffff;
+}
+
+.footerBottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 20px;
 }
 
 .footerCompany {
-  color: #fff;
-  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
 }
 
 .footerLogoText {
