@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { ScrollHighlightText } from '@/components/ScrollHighlightText';
@@ -5,7 +8,40 @@ import { StackCard } from '@/components/StackCard';
 import { WaitlistButton } from '@/components/WaitlistButton';
 import styles from './page.module.css';
 
+const howItWorksSteps = [
+  {
+    number: '01',
+    title: 'Fully onchain',
+    description:
+      'Blockchain-native credit financing eliminates the overhead of traditional lending via reduced origination costs, faster capital deployment, and more efficient loan servicing.',
+  },
+  {
+    number: '02',
+    title: 'Secured against future cash flows',
+    description:
+      'Creator revenue streams are tokenized as digital receivables. LPs hold a perfected security interest in the loan pool, providing enforceable protection in the event of borrower default.',
+  },
+  {
+    number: '03',
+    title: 'Specialized underwriting',
+    description:
+      'Rather than bootstrapping underwriting in-house, we partner with proven originators who have deep expertise and track records, so capital flows through the best operators, not around them.',
+  },
+];
+
 export default function Home() {
+  const [hiwVisible, setHiwVisible] = useState(false);
+  const hiwRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setHiwVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (hiwRef.current) observer.observe(hiwRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className={styles.page}>
       <Header />
@@ -37,8 +73,8 @@ export default function Home() {
         />
       </section>
 
-      {/* How It Works — sticky left + scrolling right */}
-      <section className={styles.designSection}>
+      {/* How It Works */}
+      <section className={styles.hiwSection} ref={hiwRef}>
         <div className={styles.sectionHeader}>
           <span className={styles.sectionLabel}>How it works</span>
           <div className={styles.dots}>
@@ -48,36 +84,24 @@ export default function Home() {
           </div>
         </div>
 
-        <div className={styles.designLayout}>
-          {/* Left — sticky headline */}
-          <div className={styles.designLeft}>
-            <p className={styles.designLeftText}>
-              Creator economy is systemically underserved by tradfi.{' '}
-              <span className={styles.accent}>Tomorrow fills the gap.</span>
-            </p>
-          </div>
+        <p className={styles.hiwHeadline}>
+          Creator economy is systemically underserved by tradfi.{' '}
+          <span className={styles.accent}>Tomorrow fills the gap.</span>
+        </p>
 
-          {/* Right — scrolling features */}
-          <div className={styles.designRight}>
-            <div>
-              <p className={styles.featureTitle}>Fully onchain</p>
-              <p className={styles.featureDesc}>
-                Blockchain-native credit financing eliminates the overhead of traditional lending via reduced origination costs, faster capital deployment, and more efficient loan servicing.
-              </p>
+        <div className={styles.hiwGrid}>
+          {howItWorksSteps.map((step, i) => (
+            <div
+              key={step.number}
+              className={`${styles.hiwCard} ${hiwVisible ? styles.hiwCardVisible : ''}`}
+              style={{ transitionDelay: `${i * 110}ms` }}
+            >
+              <p className={styles.hiwCardNumber}>{step.number}</p>
+              <div className={styles.hiwCardRule} />
+              <p className={styles.hiwCardTitle}>{step.title}</p>
+              <p className={styles.hiwCardDesc}>{step.description}</p>
             </div>
-            <div>
-              <p className={styles.featureTitle}>Secured against future cash flows</p>
-              <p className={styles.featureDesc}>
-                Creator revenue streams are tokenized as digital receivables. LPs hold a perfected security interest in the loan pool, providing enforceable protection in the event of borrower default.
-              </p>
-            </div>
-            <div>
-              <p className={styles.featureTitle}>Specialized underwriting</p>
-              <p className={styles.featureDesc}>
-                Rather than bootstrapping underwriting in-house, we partner with proven originators who have deep expertise and track records, so capital flows through the best operators, not around them.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 

@@ -107,57 +107,89 @@
   border-color: #000;
 }
 
-/* ─── Design / How It Works ─────────────────────────────────── */
-.designSection {
+/* ─── How It Works ──────────────────────────────────────────── */
+.hiwSection {
   max-width: 1200px;
   margin: 0 auto;
   padding: 128px 48px;
 }
 
-.designLayout {
-  display: flex;
-  gap: 96px;
-}
-
-.designLeft {
-  flex: 2;
-  position: sticky;
-  top: 128px;
-  align-self: flex-start;
-}
-
-.designLeftText {
-  font-size: 48px;
+.hiwHeadline {
+  font-size: clamp(32px, 3.5vw, 48px);
   line-height: 1;
   letter-spacing: -0.04em;
-  color: #000;
-  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
+  margin: 0 0 48px;
+  max-width: 520px;
 }
 
 .accent {
-  color: #ff5900;
+  color: #000;
 }
 
-.designRight {
-  flex: 1;
+.hiwGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.hiwCard {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 32px 28px 36px;
   display: flex;
   flex-direction: column;
-  gap: 96px;
-  padding-top: 30vh;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
-.featureTitle {
-  font-size: 16px;
-  font-weight: 500;
+.hiwCardVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hiwCard:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+.hiwCardNumber {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: #ff5900;
+  margin: 0 0 28px;
+}
+
+.hiwCardRule {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin-bottom: 28px;
+  flex-shrink: 0;
+}
+
+.hiwCardTitle {
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
   color: #000;
-  margin: 0 0 4px;
+  margin: 0 0 16px;
+  font-weight: 500;
 }
 
-.featureDesc {
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.5);
-  line-height: 1.6;
+.hiwCardDesc {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 1.7;
   margin: 0;
+  flex: 1;
 }
 
 /* ─── Stack / Trust Cards ───────────────────────────────────── */
@@ -291,16 +323,12 @@
     font-size: 52px;
   }
 
-  .designSection {
+  .hiwSection {
     padding: 96px 40px;
   }
 
-  .designLayout {
-    gap: 48px;
-  }
-
-  .designLeftText {
-    font-size: 36px;
+  .hiwCardNumber {
+    font-size: 52px;
   }
 
   .stackSection {
@@ -357,32 +385,32 @@
     font-size: 40px;
   }
 
-  .designSection {
-    padding: 96px 32px;
+  .hiwSection {
+    padding: 96px 24px;
   }
 
   .sectionHeader {
     margin-bottom: 40px;
   }
 
-  .designLayout {
-    flex-direction: column;
-    gap: 48px;
+  .hiwHeadline {
+    font-size: 28px;
+    margin-bottom: 40px;
   }
 
-  .designLeft {
-    position: static;
-    flex: unset;
+  .hiwGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
-  .designLeftText {
-    font-size: 32px;
+  .hiwCard {
+    border-radius: 16px;
+    padding: 28px 24px 32px;
   }
 
-  .designRight {
-    flex: unset;
-    padding-top: 0;
-    gap: 48px;
+  .hiwCardNumber {
+    font-size: 48px;
+    margin-bottom: 20px;
   }
 
   .stackSection {
