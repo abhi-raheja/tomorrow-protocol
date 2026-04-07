@@ -84,24 +84,31 @@ export default function Home() {
           </div>
         </div>
 
-        <p className={styles.hiwHeadline}>
-          Creator economy is systemically underserved by tradfi.{' '}
-          <span className={styles.accent}>Tomorrow fills the gap.</span>
-        </p>
+        <div className={styles.hiwLayout}>
+          {/* Left column */}
+          <div className={styles.hiwLeft}>
+            <p className={styles.hiwHeadline}>
+              Creator economy is systemically underserved by tradfi.{' '}
+              <span className={styles.accent}>Tomorrow fills the gap.</span>
+            </p>
+          </div>
 
-        <div className={styles.hiwGrid}>
-          {howItWorksSteps.map((step, i) => (
-            <div
-              key={step.number}
-              className={`${styles.hiwCard} ${hiwVisible ? styles.hiwCardVisible : ''}`}
-              style={{ transitionDelay: `${i * 110}ms` }}
-            >
-              <p className={styles.hiwCardNumber}>{step.number}</p>
-              <div className={styles.hiwCardRule} />
-              <p className={styles.hiwCardTitle}>{step.title}</p>
-              <p className={styles.hiwCardDesc}>{step.description}</p>
-            </div>
-          ))}
+          {/* Right column */}
+          <div className={styles.hiwRight}>
+            {howItWorksSteps.map((step, i) => (
+              <div
+                key={step.number}
+                className={`${styles.hiwCard} ${hiwVisible ? styles.hiwCardVisible : ''}`}
+                style={{ transitionDelay: `${i * 110}ms` }}
+              >
+                <div className={styles.hiwCardTop}>
+                  <p className={styles.hiwCardTitle}>{step.title}</p>
+                </div>
+                <div className={styles.hiwCardRule} />
+                <p className={styles.hiwCardDesc}>{step.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
