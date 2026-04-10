@@ -198,8 +198,8 @@ export default function Home() {
           <div className={styles.footerRight}>
             <p className={styles.footerNavLabel}>Connect</p>
             <nav className={styles.footerNav}>
-              <a href="https://x.com/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>X / Twitter</a>
-              <a href="https://www.linkedin.com/company/tomorrowloans" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>LinkedIn</a>
+              <a href="https://x.com/tmrwfinance" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>X / Twitter</a>
+              <a href="https://www.linkedin.com/company/tmrwfinance" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>LinkedIn</a>
             </nav>
           </div>
         </div>

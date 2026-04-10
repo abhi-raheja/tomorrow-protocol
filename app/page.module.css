@@ -423,7 +423,7 @@
 
 .forText {
   font-family: var(--font-playfair);
-  font-size: clamp(32px, 4vw, 60px);
+  font-size: clamp(28px, 4vw, 54px);
   line-height: 1.15;
   letter-spacing: -0.01em;
   margin: 0;
