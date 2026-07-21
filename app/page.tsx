@@ -4,24 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { ScrollHighlightText } from '@/components/ScrollHighlightText';
-import { WaitlistButton } from '@/components/WaitlistButton';
 import styles from './page.module.css';
 
 const howItWorksSteps = [
   {
-    number: '01',
     title: 'Fully onchain',
     description:
       'Blockchain-native credit financing eliminates the overhead of traditional lending via reduced origination costs, faster capital deployment, and more efficient loan servicing.',
   },
   {
-    number: '02',
     title: 'Secured against future cash flows',
     description:
       'Creator revenue streams are tokenized as digital receivables. LPs hold a perfected security interest in the loan pool, providing enforceable protection in the event of borrower default.',
   },
   {
-    number: '03',
     title: 'Specialized underwriting',
     description:
       'Rather than bootstrapping underwriting in-house, we partner with proven originators who have deep expertise and track records, so capital flows through the best operators, not around them.',
@@ -99,7 +95,7 @@ export default function Home() {
             </h1>
 
             <div className={styles.heroActions}>
-              <span className={styles.heroComingSoon}>Coming Q2 2026</span>
+              <span className={styles.heroComingSoon}>Coming Q3 2026</span>
             </div>
           </div>
 
@@ -133,7 +129,7 @@ export default function Home() {
             <div className={styles.hiwCards}>
               {howItWorksSteps.map((step, i) => (
                 <div
-                  key={step.number}
+                  key={step.title}
                   className={`${styles.hiwCard} ${hiwVisible ? styles.hiwCardVisible : ''}`}
                   style={{ transitionDelay: `${i * 120}ms` }}
                 >

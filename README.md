@@ -1,15 +1,13 @@
-# Tomorrow Protocol (Frontend Prototype)
+# Tomorrow Protocol
 
-Public-facing Next.js prototype for Tomorrow Protocol marketing pages and dashboard mockups.
+Public-facing Next.js site for Tomorrow Protocol, exported as a static site and
+deployed to GitHub Pages at [tmrw.finance](https://tmrw.finance).
 
 ## Tech Stack
 
 - Next.js (App Router)
 - React + TypeScript
-- Tailwind CSS v4
-- Radix UI primitives
-- Recharts
-- Sonner (toasts)
+- CSS Modules
 
 ## Local Development
 
@@ -19,13 +17,7 @@ Public-facing Next.js prototype for Tomorrow Protocol marketing pages and dashbo
 npm ci
 ```
 
-2. Copy the example env file and fill in the values:
-
-```bash
-cp .env.example .env.local
-```
-
-3. Start the dev server:
+2. Start the dev server:
 
 ```bash
 npm run dev
@@ -33,43 +25,28 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Environment Variables
-
-The waitlist endpoint fails closed (returns an error) unless these are configured:
-
-- `NOTION_API_KEY`: Notion integration secret
-- `NOTION_WAITLIST_DB_ID`: Notion database ID for waitlist entries
-
-Expected Notion database properties:
-
-- `Email` (title)
-- `X Handle` (rich_text)
-- `Signed Up` (date)
-
 ## Scripts
 
 - `npm run dev` - start local dev server
 - `npm run lint` - run ESLint
 - `npm run build` - production build
-- `npm run start` - run production server
 
-## Security Notes
+## GitHub Pages deployment
 
-- Waitlist API validates email and X handle input
-- Request body size is capped
-- Basic in-memory rate limiting is enabled (best effort; not distributed)
-- Honeypot field is included to reduce bot spam
-- Raw email/X handle values are not logged server-side
-- Security headers are configured in `next.config.ts`
+The workflow at `.github/workflows/deploy-pages.yml` runs on pushes to `main`,
+builds the static `out/` directory, and deploys it through GitHub Pages. In the
+repository's **Settings → Pages**, set **Source** to **GitHub Actions**.
 
-## Production Notes
+Set `tmrw.finance` as the custom domain in **Settings → Pages** (GitHub ignores
+`CNAME` files for custom Actions workflows). Configure the apex DNS records for
+GitHub Pages, then verify the domain and enable **Enforce HTTPS**. DNS and TLS
+issuance can take time to propagate.
 
-- This project currently uses extensive inline styles on the landing page. A strict CSP is not configured yet because it would require a nonce/hash strategy (or refactoring inline styles into CSS/Tailwind).
-- `npm audit` requires network access to the npm registry. Run it in CI or a connected environment as part of release checks.
-- Dashboard pages use mock data and simulated actions only. Do not treat them as operational admin controls.
+## Production notes
+
+- `npm run build` creates `out/`, the exact artifact deployed by Pages.
 
 ## Repo Hygiene
 
 - `.env*` files are gitignored
-- `.env.example` is committed as the canonical template
 - Default create-next-app unused assets/components were removed to keep the public repo minimal

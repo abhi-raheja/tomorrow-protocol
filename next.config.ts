@@ -1,29 +1,15 @@
 import type { NextConfig } from "next";
 
-const securityHeaders = [
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "X-DNS-Prefetch-Control", value: "off" },
-  {
-    key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
-  },
-  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
-];
-
 const nextConfig: NextConfig = {
-  poweredByHeader: false,
+  // GitHub Pages only serves static assets, so produce the deployable `out/`
+  // directory during `next build`.
+  output: "export",
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   turbopack: {
     root: process.cwd(),
-  },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: securityHeaders,
-      },
-    ];
   },
 };
 

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Urbanist, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import { WaitlistProvider } from "@/components/WaitlistProvider";
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
@@ -17,8 +16,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tmrw.finance"),
   title: "Tomorrow Protocol",
   description: "Institutional-grade yield from creator financing",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
@@ -28,10 +31,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${urbanist.variable} ${playfair.variable} font-sans antialiased`}>
-        <WaitlistProvider>
-          {children}
-        </WaitlistProvider>
+      <body className={`${urbanist.variable} ${playfair.variable}`}>
+        {children}
       </body>
     </html>
   );
