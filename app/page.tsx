@@ -6,6 +6,8 @@ import { Header } from '@/components/layout/Header';
 import { ScrollHighlightText } from '@/components/ScrollHighlightText';
 import styles from './page.module.css';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 const howItWorksSteps = [
   {
     title: 'Fully onchain',
@@ -26,25 +28,25 @@ const howItWorksSteps = [
 
 const trustCards = [
   {
-    icon: '/icons/shield.svg',
+    icon: 'shield.svg',
     title: 'Professional Risk Management',
     description:
       'We work with specialized originators and underwriters with a multi-year track record and deep relationships within the creator economy.',
   },
   {
-    icon: '/icons/clock.svg',
+    icon: 'clock.svg',
     title: 'Average Loan Duration',
     description:
       'Creator loans range from 3-12 month contracts with strong protection rights and predictable repayment schedules.',
   },
   {
-    icon: '/icons/chart.svg',
+    icon: 'chart.svg',
     title: 'First-Loss Buffer',
     description:
       'Originators and underwriters put skin in the game by providing first-loss capital before LP capital is touched when defaults occur.',
   },
   {
-    icon: '/icons/lock.svg',
+    icon: 'lock.svg',
     title: 'Default Rate',
     description:
       'Historically very low default rates. Audited smart contracts and institutional-grade custody.',
@@ -81,7 +83,10 @@ export default function Home() {
       {/* ─── Hero ─── */}
       <section className={styles.hero}>
         <div className={styles.heroBg}>
-          <div className={styles.heroBgImage} />
+          <div
+            className={styles.heroBgImage}
+            style={{ backgroundImage: `url('${basePath}/images/hero-bg.jpg')` }}
+          />
           <div className={styles.heroBgOverlay} />
         </div>
 
@@ -160,7 +165,7 @@ export default function Home() {
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 <div className={styles.trustCardIcon}>
-                  <Image src={card.icon} alt="" width={24} height={24} />
+                  <Image src={`${basePath}/icons/${card.icon}`} alt="" width={24} height={24} />
                 </div>
                 <h3 className={styles.trustCardTitle}>{card.title}</h3>
                 <p className={styles.trustCardDesc}>{card.description}</p>
@@ -186,7 +191,7 @@ export default function Home() {
         <div className={styles.footerTop}>
           <div className={styles.footerLeft}>
             <div className={styles.footerBrand}>
-              <Image src="/icons/tomorrow-logo-white.svg" alt="Tomorrow" width={34} height={28} />
+              <Image src={`${basePath}/icons/tomorrow-logo-white.svg`} alt="Tomorrow" width={34} height={28} />
               <span className={styles.footerBrandName}>Tomorrow</span>
             </div>
           </div>

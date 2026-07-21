@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styles from './Header.module.css';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -17,7 +19,7 @@ export function Header() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
       <Link href="/" className={styles.logo}>
-        <Image src="/icons/tomorrow-logo-white.svg" alt="Tomorrow" width={34} height={28} />
+        <Image src={`${basePath}/icons/tomorrow-logo-white.svg`} alt="Tomorrow" width={34} height={28} />
         <span className={styles.logoText}>Tomorrow</span>
       </Link>
     </header>

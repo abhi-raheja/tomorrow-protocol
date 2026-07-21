@@ -42,6 +42,11 @@ Set `tmrw.finance` as the custom domain in **Settings → Pages** (GitHub ignore
 GitHub Pages, then verify the domain and enable **Enforce HTTPS**. DNS and TLS
 issuance can take time to propagate.
 
+The build uses `/tomorrow-website` while it is served from the repository URL.
+After the custom domain is configured, add an Actions repository variable named
+`CUSTOM_DOMAIN` with the value `tmrw.finance`; subsequent builds will use root
+asset paths for the custom domain.
+
 ## Production notes
 
 - `npm run build` creates `out/`, the exact artifact deployed by Pages.
